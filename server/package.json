@@ -1,0 +1,37 @@
+{
+  "name": "crappital-core",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node_modules/typescript/bin/tsc",
+    "start": "node dist/server.js",
+    "format": "prettier --write 'src/**/*.{ts,json}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abelbakk/crappital.git"
+  },
+  "author": "abelbakk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abelbakk/crappital/issues"
+  },
+  "homepage": "https://github.com/abelbakk/crappital#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mongoose": "^8.12.1",
+    "rxjs": "^7.8.2"
+  }
+}
