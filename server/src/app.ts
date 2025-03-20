@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.get('/', (_, res) => {
-    res.send(`Server running on port ${PORT}`);
+    res.send(`Server is running on port ${PORT}`);
 });
 
 export default app;
