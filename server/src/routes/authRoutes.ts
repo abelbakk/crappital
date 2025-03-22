@@ -17,11 +17,7 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *         content:
      *           application/json:
      *             schema:
-     *               type: object
-     *               properties:
-     *                 authenticated:
-     *                   type: boolean
-     *                   example: true
+     *               $ref: '#/components/schemas/UserInfo'
      *       401:
      *         description: User is not authenticated
      *         content:
@@ -35,7 +31,8 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      */
     router.get('/status', (req: Request, res: Response) => {
         if (req.isAuthenticated()) {
-            res.status(200).json({ authenticated: true });
+            const { password, ...userInfo } = req.user as IUser;
+            res.status(200).json(userInfo);
         }
         res.status(401).json({ authenticated: false });
     });

@@ -10,7 +10,7 @@ import { configurePassport } from './passport/passport';
 import { errorHandler } from './utils/errorHandler';
 import { userRoutes } from './routes/userRoutes';
 import { authRoutes } from './routes/authRoutes';
-import { setupSwagger } from './utils/swaggerConfig';
+import { setupSwagger } from './utils/swagger';
 
 dotenv.config();
 

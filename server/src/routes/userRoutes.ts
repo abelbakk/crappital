@@ -15,7 +15,7 @@ export const userRoutes = (router: Router): Router => {
      *       content:
      *         application/json:
      *           schema:
-     *             $ref: '#/components/schemas/NewUser'
+     *             $ref: '#/components/schemas/UserManipulation'
      *     responses:
      *       201:
      *         description: User created successfully
@@ -91,7 +91,7 @@ export const userRoutes = (router: Router): Router => {
      * @swagger
      * /core/users:
      *   get:
-     *     summary: Get all users (required administrator permissions)
+     *     summary: Get all users (requires administrator permissions)
      *     description: Returns a list of all registered users. Only accessible by admins.
      *     tags: [Users]
      *     responses:
@@ -102,7 +102,7 @@ export const userRoutes = (router: Router): Router => {
      *             schema:
      *               type: array
      *               items:
-     *                 $ref: '#/components/schemas/User'
+     *                 $ref: '#/components/schemas/UserInfo'
      *       401:
      *         description: User is not authenticated
      *         content:
@@ -142,8 +142,11 @@ export const userRoutes = (router: Router): Router => {
         }
 
         User.find()
+            .lean()
             .then((users) => {
-                res.status(200).json(users);
+                logger.debug(JSON.stringify(users));
+                const usersInfo = users.map(({ password, ...userInfo }: IUser) => userInfo);
+                res.status(200).json(usersInfo);
             })
             .catch((error) => {
                 logger.error(error);
@@ -243,8 +246,6 @@ export const userRoutes = (router: Router): Router => {
             return next({ status: 400 });
         }
 
-        res.status(200);
-
         if (!(requestUser._id?.toString() === userId || requestUser.isAdmin)) {
             return next({ status: 403, code: AUTH_ERRORS.FORBIDDEN });
         }
@@ -260,6 +261,157 @@ export const userRoutes = (router: Router): Router => {
                 logger.error(error);
                 next({ status: 500 });
             });
+    });
+
+    /**
+     * @swagger
+     * /core/users/{id}:
+     *   put:
+     *     summary: Update an existing user
+     *     description: Updates a user's details, allowing modification of all fields. Special handling for password and email fields.
+     *     tags:
+     *       - Users
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The ID of the user to update
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/UserManipulation'
+     *     responses:
+     *       200:
+     *         description: Successfully updated user
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 userId:
+     *                   type: string
+     *                   example: "60d0fe4f5311236168a109ca"
+     *       400:
+     *         description: Bad request (invalid fields, password mismatch, email already taken)
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 400
+     *                 code:
+     *                   type: string
+     *                   enum: ["USER_ERRORS_DUPLICATE_EMAIL", "USER_ERRORS_PASSWORD_MISMATCH"]
+     *       401:
+     *         description: Not authenticated (user must be logged in)
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 401
+     *                 code:
+     *                   type: string
+     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *       403:
+     *         description: Forbidden - User not authorized to modify this account
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 403
+     *                 code:
+     *                   type: string
+     *                   example: "AUTH_ERRORS_FORBIDDEN"
+     *       404:
+     *         description: User not found
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 404
+     *                 code:
+     *                   type: string
+     *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
+     *       500:
+     *         description: Internal server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 500
+     */
+    router.put('/users/:id', async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            if (!req.isAuthenticated()) {
+                return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
+            }
+
+            const userId = req.params.id;
+            const requestUser = req.user as IUser;
+
+            if (!userId) {
+                return next({ status: 400 });
+            }
+
+            if (!(requestUser._id?.toString() === userId || requestUser.isAdmin)) {
+                return next({ status: 403, code: AUTH_ERRORS.FORBIDDEN });
+            }
+
+            const { confirmPassword, ...updateData } = req.body;
+
+            const user = await User.findById(userId);
+            if (!user) {
+                return next({ status: 404, code: AUTH_ERRORS.USER_NOT_FOUND });
+            }
+
+            if (updateData.password) {
+                if (!confirmPassword || updateData.password !== confirmPassword) {
+                    return next({ status: 400, code: USER_ERRORS.PASSWORD_MISMATCH });
+                }
+                user.password = confirmPassword;
+            }
+
+            if (updateData.email && updateData.email !== user.email) {
+                const existingUser = await User.findOne({ email: updateData.email });
+                if (existingUser) {
+                    return next({ status: 400, code: USER_ERRORS.DUPLICATE_EMAIL });
+                }
+            }
+
+            if (Object.keys(updateData).length > 0) {
+                Object.assign(user, updateData);
+                await user.save();
+            }
+            // refresh the session
+            req.login(user, (err: string | null) => {
+                if (err) {
+                    logger.error(err);
+                    return next({ status: 500 });
+                }
+                res.status(200).json({ userId: user._id });
+            });
+        } catch (err) {
+            logger.error(err);
+            return next({ status: 500 });
+        }
     });
 
     return router;

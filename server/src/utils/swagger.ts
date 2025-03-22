@@ -41,7 +41,7 @@ const options = {
                     },
                     required: ['email', 'password', 'firstName', 'lastName', 'address'],
                 },
-                NewUser: {
+                UserManipulation: {
                     type: 'object',
                     properties: {
                         email: { type: 'string', format: 'email' },
@@ -58,7 +58,30 @@ const options = {
                         number: { type: 'string' },
                         additionalDetails: { type: 'string' },
                     },
-                    required: ['email', 'password', 'confirmPassword', 'firstName', 'lastName', 'phone', 'postalCode', 'country', 'county', 'city', 'street', 'number'],
+                },
+                UserInfo: {
+                    type: 'object',
+                    properties: {
+                        email: { type: 'string', format: 'email' },
+                        firstName: { type: 'string' },
+                        lastName: { type: 'string' },
+                        phone: { type: 'string' },
+                        address: {
+                            type: 'object',
+                            properties: {
+                                postalCode: { type: 'string' },
+                                country: { type: 'string' },
+                                county: { type: 'string' },
+                                city: { type: 'string' },
+                                street: { type: 'string' },
+                                number: { type: 'string' },
+                                additionalDetails: { type: 'string' },
+                            },
+                            required: ['postalCode', 'country', 'county', 'city', 'street', 'number'],
+                        },
+                        isAdmin: { type: 'boolean' },
+                    },
+                    required: ['email', 'password', 'firstName', 'lastName', 'address'],
                 },
             },
         },
@@ -66,8 +89,6 @@ const options = {
     apis: ['./src/routes/*.ts'],
 };
 
-const swaggerSpec = swaggerJSDoc(options);
-
 export function setupSwagger(app: Express) {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)));
 }
