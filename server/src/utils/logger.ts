@@ -11,7 +11,7 @@ if (!fs.existsSync(logDirectory)) {
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.combine(
-        winston.format.colorize({ colors: { info: 'blue', error: 'red' } }),
+        winston.format.colorize({ colors: { info: 'blue', error: 'red', debug: 'green' } }),
         winston.format.timestamp({
             format: 'DD-MM-YYYY [at] HH:mm',
         }),
