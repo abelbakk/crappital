@@ -1,34 +1,34 @@
 {
-  "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "compilerOptions": {
+        /* Language and Environment */
+        "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
 
-    /* Modules */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-    "resolveJsonModule": true,                        /* Enable importing .json files. */
+        /* Modules */
+        "module": "commonjs" /* Specify what module code is generated. */,
+        "rootDir": "./src" /* Specify the root folder within your source files. */,
+        "resolveJsonModule": true /* Enable importing .json files. */,
 
-    /* Emit */
-    "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
+        /* Emit */
+        "outDir": "./dist" /* Specify an output folder for all emitted files. */,
 
-    /* Interop Constraints */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+        /* Interop Constraints */
+        "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+        "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
-    /* Type Checking */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
-    "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
-    "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
-    "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
-    "noUnusedLocals": true,                           /* Enable error reporting when local variables aren't read. */
-    "noUnusedParameters": true,                       /* Raise an error when a function parameter isn't read. */
-	"noFallthroughCasesInSwitch": true,               /* Enable error reporting for fallthrough cases in switch statements. */
+        /* Type Checking */
+        "strict": true /* Enable all strict type-checking options. */,
+        "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+        "strictNullChecks": true /* When type checking, take into account 'null' and 'undefined'. */,
+        "strictFunctionTypes": true /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */,
+        "strictPropertyInitialization": true /* Check for class properties that are declared but not set in the constructor. */,
+        "noUnusedLocals": true /* Enable error reporting when local variables aren't read. */,
+        "noUnusedParameters": true /* Raise an error when a function parameter isn't read. */,
+        "noFallthroughCasesInSwitch": true /* Enable error reporting for fallthrough cases in switch statements. */,
 
-    /* Completeness */
-    // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+        /* Completeness */
+        // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
+        "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist"]
 }
