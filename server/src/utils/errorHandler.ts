@@ -18,6 +18,10 @@ export const USER_ERRORS = {
     PASSWORD_MISMATCH: 'USER_ERRORS_PASSWORD_MISMATCH',
 };
 
+export const GENERAL_ERRORS = {
+    MISSING_REQUEST_PARAMETERS: 'GENERAL_ERRORS_MISSING_REQUEST_PARAMETERS',
+};
+
 export function errorHandler(err: ApiError, req: Request, res: Response, _next: NextFunction) {
     const status = err.status || 500;
     const errorCode = err.code || 'UNKNOWN_ERROR';

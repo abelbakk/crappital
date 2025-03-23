@@ -11,6 +11,8 @@ import { errorHandler } from './utils/errorHandler';
 import { userRoutes } from './routes/userRoutes';
 import { authRoutes } from './routes/authRoutes';
 import { setupSwagger } from './utils/swagger';
+import { currencyRoutes } from './routes/currencyRoutes';
+import { updateExchangeRates } from './services/currencyService';
 
 dotenv.config();
 
@@ -43,10 +45,13 @@ app.use(expressSession(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 configurePassport(passport);
+app.use('/core/users', userRoutes(express.Router()));
 app.use('/core/auth', authRoutes(passport, express.Router()));
-app.use('/core', userRoutes(express.Router()));
+app.use('/core/currencies', currencyRoutes(express.Router()));
 setupSwagger(app);
 app.use(errorHandler);
+
+updateExchangeRates();
 
 app.listen(port, () => {
     logger.info(`Server is running on http://localhost:${port}`);

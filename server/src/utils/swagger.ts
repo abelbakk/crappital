@@ -13,6 +13,7 @@ const options = {
         tags: [
             { name: 'Auth', description: 'Authentication endpoints' },
             { name: 'Users', description: 'User management endpoints' },
+            { name: 'Currencies', description: 'Currency info and exchange endpoints' },
         ],
         components: {
             schemas: {
@@ -82,6 +83,14 @@ const options = {
                         isAdmin: { type: 'boolean' },
                     },
                     required: ['email', 'password', 'firstName', 'lastName', 'address'],
+                },
+                CurrencyInfo: {
+                    type: 'object',
+                    properties: {
+                        code: { type: 'string' },
+                        name: { type: 'string' },
+                    },
+                    required: ['code', 'name'],
                 },
             },
         },

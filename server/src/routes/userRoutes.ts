@@ -50,7 +50,7 @@ export const userRoutes = (router: Router): Router => {
      *                   type: integer
      *                   example: 500
      */
-    router.post('/users', async (req: Request, res: Response, next: NextFunction) => {
+    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         const { email, password, confirmPassword, firstName, lastName, phone, postalCode, country, county, city, street, number, additionalDetails } = req.body;
         try {
             const existingUser = await User.findOne({ email });
@@ -132,7 +132,7 @@ export const userRoutes = (router: Router): Router => {
      *       500:
      *         description: Internal server error
      */
-    router.get('/users', (req: Request, res: Response, next: NextFunction) => {
+    router.get('/', (req: Request, res: Response, next: NextFunction) => {
         if (!req.isAuthenticated()) {
             return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
         }
@@ -144,7 +144,6 @@ export const userRoutes = (router: Router): Router => {
         User.find()
             .lean()
             .then((users) => {
-                logger.debug(JSON.stringify(users));
                 const usersInfo = users.map(({ password, ...userInfo }: IUser) => userInfo);
                 res.status(200).json(usersInfo);
             })
@@ -234,7 +233,7 @@ export const userRoutes = (router: Router): Router => {
      *       500:
      *         description: Internal server error
      */
-    router.delete('/users/:id', (req: Request, res: Response, next: NextFunction) => {
+    router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
         if (!req.isAuthenticated()) {
             return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
         }
@@ -358,7 +357,7 @@ export const userRoutes = (router: Router): Router => {
      *                   type: integer
      *                   example: 500
      */
-    router.put('/users/:id', async (req: Request, res: Response, next: NextFunction) => {
+    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
         try {
             if (!req.isAuthenticated()) {
                 return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
