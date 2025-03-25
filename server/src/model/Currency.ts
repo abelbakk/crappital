@@ -6,7 +6,7 @@ interface ICurrency extends Document {
     exchangeRates: Map<String, Number>;
 }
 
-const CurrencySchema = new Schema({
+const CurrencySchema = new Schema<ICurrency>({
     code: { type: String, required: true },
     name: { type: String, required: true },
     exchangeRates: { type: Map, of: Number },

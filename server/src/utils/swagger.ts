@@ -14,6 +14,7 @@ const options = {
             { name: 'Auth', description: 'Authentication endpoints' },
             { name: 'Users', description: 'User management endpoints' },
             { name: 'Currencies', description: 'Currency info and exchange endpoints' },
+            { name: 'Categories', description: 'Transaction category endpoints' },
         ],
         components: {
             schemas: {
@@ -91,6 +92,14 @@ const options = {
                         name: { type: 'string' },
                     },
                     required: ['code', 'name'],
+                },
+                Category: {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string' },
+                        icon: { type: 'string' },
+                    },
+                    required: ['name'],
                 },
             },
         },

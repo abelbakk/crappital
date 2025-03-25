@@ -13,6 +13,7 @@ import { authRoutes } from './routes/authRoutes';
 import { setupSwagger } from './utils/swagger';
 import { currencyRoutes } from './routes/currencyRoutes';
 import { updateExchangeRates } from './services/currencyService';
+import { categoryRoutes } from './routes/categoryRoutes';
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ configurePassport(passport);
 app.use('/core/users', userRoutes(express.Router()));
 app.use('/core/auth', authRoutes(passport, express.Router()));
 app.use('/core/currencies', currencyRoutes(express.Router()));
+app.use('/core/categories', categoryRoutes(express.Router()));
 setupSwagger(app);
 app.use(errorHandler);
 
