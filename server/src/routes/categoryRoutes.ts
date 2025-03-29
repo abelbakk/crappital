@@ -1,8 +1,8 @@
-import { IUser } from '../model/User';
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
-import { AUTH_ERRORS } from '../utils/errorHandler';
+import { GENERAL_ERRORS } from '../utils/errorHandler';
 import { getAllCategories, createCategory, updateCategoryByName, deleteCategoryByName } from '../services/categoryService';
+import { isAdmin, isAuthenticated } from '../middleware/authMiddleware';
 
 export const categoryRoutes = (router: Router): Router => {
     /**
@@ -23,34 +23,11 @@ export const categoryRoutes = (router: Router): Router => {
      *               items:
      *                 $ref: '#/components/schemas/Category'
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
+    router.get('/', isAuthenticated, async (_: Request, res: Response, next: NextFunction) => {
         try {
             const categories = await getAllCategories();
             res.status(200).json(categories);
@@ -91,67 +68,22 @@ export const categoryRoutes = (router: Router): Router => {
      *             schema:
      *               $ref: '#/components/schemas/Category'
      *       400:
-     *         description: Bad request, invalid or missing fields
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 400
-     *                 message:
-     *                   type: string
-     *                   example: "Category name is required"
+     *         $ref: '#/components/responses/BadRequest'
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       403:
-     *         description: Forbidden, user is not an admin
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 403
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_ADMIN"
+     *         $ref: '#/components/responses/Forbidden'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
-        if (!(req.user as IUser)?.isAdmin) {
-            return next({ status: 403, code: AUTH_ERRORS.NOT_ADMIN });
-        }
-
+    router.post('/', isAuthenticated, isAdmin, async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const { name, icon } = req.body;
+            if (!name || !icon) {
+                return next({ status: 400, code: GENERAL_ERRORS.MISSING_REQUEST_PARAMETERS });
+            }
             const category = await createCategory(req.body);
-            res.status(201).json(category);
+            res.status(201).json({ id: category._id, ...category.toObject() });
         } catch (error) {
             logger.error(error);
             return next({ status: 500 });
@@ -192,91 +124,29 @@ export const categoryRoutes = (router: Router): Router => {
      *         content:
      *           application/json:
      *             schema:
-     *               $ref: '#/components/schemas/Category'
+     *               $ref: '#/components/schemas/Category
      *       400:
-     *         description: Bad request, invalid or missing fields
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 400
-     *                 message:
-     *                   type: string
-     *                   example: "Invalid category name"
+     *         $ref: '#/components/responses/BadRequest'
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       403:
-     *         description: Forbidden, user is not an admin
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 403
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_ADMIN"
+     *         $ref: '#/components/responses/Forbidden'
      *       404:
-     *         description: Category not found
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 404
-     *                 code:
-     *                   type: string
-     *                   example: "CATEGORY_ERRORS_NOT_FOUND"
+     *         $ref: '#/components/responses/NotFound'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
-     *                 code:
-     *                   type: string
-     *                   example: "SERVER_ERROR"
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.put('/:name', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
-        if (!(req.user as IUser)?.isAdmin) {
-            return next({ status: 403, code: AUTH_ERRORS.NOT_ADMIN });
-        }
-
+    router.put('/:name', isAuthenticated, isAdmin, async (req: Request, res: Response, next: NextFunction) => {
         const { name } = req.params;
-        const updateData = req.body;
-
+        if (!name) {
+            return next({ status: 400, code: GENERAL_ERRORS.MISSING_REQUEST_PARAMETERS });
+        }
         try {
-            const updatedCategory = await updateCategoryByName(name, updateData);
+            const updatedCategory = await updateCategoryByName(name, req.body);
             if (!updatedCategory) {
-                return next({ status: 404, code: 'CATEGORY_ERRORS_NOT_FOUND' });
+                return next({ status: 404, code: GENERAL_ERRORS.NOT_FOUND });
             }
-            res.status(200).json(updatedCategory);
+            res.status(200).json({ id: updatedCategory._id, ...updatedCategory.toObject() });
         } catch (error) {
             logger.error(error);
             return next({ status: 500 });
@@ -310,72 +180,25 @@ export const categoryRoutes = (router: Router): Router => {
      *                   type: string
      *                   example: "Category deleted successfully"
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       403:
-     *         description: Forbidden, user is not an admin
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 403
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_ADMIN"
+     *         $ref: '#/components/responses/Forbidden'
      *       404:
-     *         description: Category not found
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 404
-     *                 code:
-     *                   type: string
-     *                   example: "CATEGORY_ERRORS_NOT_FOUND"
+     *         $ref: '#/components/responses/NotFound'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.delete('/:name', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
-        if (!(req.user as IUser)?.isAdmin) {
-            return next({ status: 403, code: AUTH_ERRORS.NOT_ADMIN });
-        }
-
+    router.delete('/:name', isAuthenticated, isAdmin, async (req: Request, res: Response, next: NextFunction) => {
         const { name } = req.params;
-
+        if (!name) {
+            return next({ status: 400, code: GENERAL_ERRORS.MISSING_REQUEST_PARAMETERS });
+        }
         try {
             const deletedCategory = await deleteCategoryByName(name);
             if (!deletedCategory) {
-                return next({ status: 404, code: 'CATEGORY_ERRORS_NOT_FOUND' });
+                return next({ status: 404, code: GENERAL_ERRORS.NOT_FOUND });
             }
-            res.status(200).json({ message: 'Category deleted successfully' });
+            res.status(200).json({ id: deletedCategory._id, message: 'Category deleted successfully' });
         } catch (error) {
             logger.error(error);
             return next({ status: 500 });

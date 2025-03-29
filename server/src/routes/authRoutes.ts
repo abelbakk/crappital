@@ -3,6 +3,7 @@ import { IUser } from '../model/User';
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 import { AUTH_ERRORS } from '../utils/errorHandler';
+import { isAuthenticated } from '../middleware/authMiddleware';
 
 export const authRoutes = (passport: PassportStatic, router: Router): Router => {
     /**
@@ -19,15 +20,7 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *             schema:
      *               $ref: '#/components/schemas/UserInfo'
      *       401:
-     *         description: User is not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 authenticated:
-     *                   type: boolean
-     *                   example: false
+     *         $ref: '#/components/responses/Unauthorized'
      */
     router.get('/status', (req: Request, res: Response) => {
         if (req.isAuthenticated()) {
@@ -83,15 +76,7 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *                   type: string
      *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
     router.post('/session', (req: Request, res: Response, next: NextFunction) => {
         passport.authenticate('local', (error: string | null, user: IUser) => {
@@ -133,34 +118,11 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *                   type: boolean
      *                   example: true
      *       401:
-     *         description: User is not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.delete('/session', (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
+    router.delete('/session', isAuthenticated, (req: Request, res: Response, next: NextFunction) => {
         req.logout((err) => {
             if (err) {
                 logger.error(err);

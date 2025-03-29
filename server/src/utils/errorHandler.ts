@@ -20,10 +20,7 @@ export const USER_ERRORS = {
 
 export const GENERAL_ERRORS = {
     MISSING_REQUEST_PARAMETERS: 'GENERAL_ERRORS_MISSING_REQUEST_PARAMETERS',
-};
-
-export const CATEGORY_ERRORS = {
-    NOT_FOUND: 'CATEGORY_ERRORS_NOT_FOUND',
+    NOT_FOUND: 'GENERAL_ERRORS_NOT_FOUND',
 };
 
 export function errorHandler(err: ApiError, req: Request, res: Response, _next: NextFunction) {

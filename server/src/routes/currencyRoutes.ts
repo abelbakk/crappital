@@ -1,8 +1,9 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
-import { AUTH_ERRORS, GENERAL_ERRORS } from '../utils/errorHandler';
+import { GENERAL_ERRORS } from '../utils/errorHandler';
 import { Currency } from '../model/Currency';
 import { convertCurrency, updateExchangeRates } from '../services/currencyService';
+import { isAdmin, isAuthenticated } from '../middleware/authMiddleware';
 
 export const currencyRoutes = (router: Router): Router => {
     /**
@@ -23,33 +24,11 @@ export const currencyRoutes = (router: Router): Router => {
      *               items:
      *                 $ref: '#/components/schemas/CurrencyInfo'
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.get('/', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
+    router.get('/', isAuthenticated, async (_: Request, res: Response, next: NextFunction) => {
         Currency.find()
             .lean()
             .then((currencies) => {
@@ -74,34 +53,11 @@ export const currencyRoutes = (router: Router): Router => {
      *       200:
      *         description: Exchange rates updated successfully
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.put('/', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
+    router.put('/', isAuthenticated, isAdmin, async (_: Request, res: Response, next: NextFunction) => {
         try {
             await updateExchangeRates();
             res.status(200).send();
@@ -149,46 +105,13 @@ export const currencyRoutes = (router: Router): Router => {
      *                 result:
      *                   type: number
      *       400:
-     *         description: Bad request, invalid or missing query parameters
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 400
-     *                 code:
-     *                   type: string
-     *                   example: "GENERAL_ERRORS_MISSING_REQUEST_PARAMETERS"
+     *         $ref: '#/components/responses/BadRequest'
      *       401:
-     *         description: Unauthorized, user not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.get('/convert', async (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
+    router.get('/convert', isAuthenticated, async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { from, to, amount } = req.query;
             if (!from || !to || !amount) {

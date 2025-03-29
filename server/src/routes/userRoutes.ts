@@ -2,6 +2,7 @@ import { IUser, User } from '../model/User';
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 import { AUTH_ERRORS, USER_ERRORS } from '../utils/errorHandler';
+import { isAdmin, isAuthenticated, isSelfOrAdmin } from '../middleware/authMiddleware';
 
 export const userRoutes = (router: Router): Router => {
     /**
@@ -40,15 +41,7 @@ export const userRoutes = (router: Router): Router => {
      *                   type: string
      *                   enum: ["USER_ERRORS_DUPLICATE_EMAIL", "USER_ERRORS_PASSWORD_MISMATCH"]
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
     router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         const { email, password, confirmPassword, firstName, lastName, phone, postalCode, country, county, city, street, number, additionalDetails } = req.body;
@@ -104,43 +97,13 @@ export const userRoutes = (router: Router): Router => {
      *               items:
      *                 $ref: '#/components/schemas/UserInfo'
      *       401:
-     *         description: User is not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       403:
-     *         description: User is not authorized (not an admin)
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 403
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_ADMIN"
+     *         $ref: '#/components/responses/Forbidden'
      *       500:
-     *         description: Internal server error
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.get('/', (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
-        if (!(req.user as IUser)?.isAdmin) {
-            return next({ status: 403, code: AUTH_ERRORS.NOT_ADMIN });
-        }
-
+    router.get('/', isAuthenticated, isAdmin, (_: Request, res: Response, next: NextFunction) => {
         User.find()
             .lean()
             .then((users) => {
@@ -182,85 +145,35 @@ export const userRoutes = (router: Router): Router => {
      *                   type: string
      *                   example: "User deleted successfully"
      *       400:
-     *         description: Invalid request (missing or incorrect ID)
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 400
+     *         $ref: '#/components/responses/BadRequest'
      *       401:
-     *         description: User is not authenticated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       403:
-     *         description: Forbidden - User can only delete themselves, unless they are an admin
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 403
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_FORBIDDEN"
+     *         $ref: '#/components/responses/Forbidden'
      *       404:
-     *         description: User not found
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 404
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
+     *         $ref: '#/components/responses/NotFound'
      *       500:
-     *         description: Internal server error
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
-        if (!req.isAuthenticated()) {
-            return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-        }
-
-        const userId = req.params.id;
-        const requestUser = req.user as IUser;
-
-        if (!userId) {
-            return next({ status: 400 });
-        }
-
-        if (!(requestUser._id?.toString() === userId || requestUser.isAdmin)) {
-            return next({ status: 403, code: AUTH_ERRORS.FORBIDDEN });
-        }
-
-        User.deleteOne({ _id: userId })
-            .then((result) => {
-                if (result.deletedCount === 0) {
-                    return next({ status: 404, code: AUTH_ERRORS.USER_NOT_FOUND });
-                }
-                res.status(200).json({ success: true, message: 'User deleted successfully' });
-            })
-            .catch((error) => {
-                logger.error(error);
-                next({ status: 500 });
-            });
-    });
+    router.delete(
+        '/:id',
+        isAuthenticated,
+        isSelfOrAdmin((req) => req.params.id),
+        (req: Request, res: Response, next: NextFunction) => {
+            const userId = req.params.id;
+            User.deleteOne({ _id: userId })
+                .then((result) => {
+                    if (result.deletedCount === 0) {
+                        return next({ status: 404, code: AUTH_ERRORS.USER_NOT_FOUND });
+                    }
+                    res.status(200).json({ success: true, message: 'User deleted successfully' });
+                })
+                .catch((error) => {
+                    logger.error(error);
+                    next({ status: 500 });
+                });
+        },
+    );
 
     /**
      * @swagger
@@ -308,110 +221,60 @@ export const userRoutes = (router: Router): Router => {
      *                   type: string
      *                   enum: ["USER_ERRORS_DUPLICATE_EMAIL", "USER_ERRORS_PASSWORD_MISMATCH"]
      *       401:
-     *         description: Not authenticated (user must be logged in)
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 401
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_NOT_AUTHENTICATED"
+     *         $ref: '#/components/responses/Unauthorized'
      *       403:
-     *         description: Forbidden - User not authorized to modify this account
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 403
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_FORBIDDEN"
+     *         $ref: '#/components/responses/Forbidden'
      *       404:
-     *         description: User not found
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 404
-     *                 code:
-     *                   type: string
-     *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
+     *         $ref: '#/components/responses/NotFound'
      *       500:
-     *         description: Internal server error
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 status:
-     *                   type: integer
-     *                   example: 500
+     *         $ref: '#/components/responses/ServerError'
      */
-    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            if (!req.isAuthenticated()) {
-                return next({ status: 401, code: AUTH_ERRORS.NOT_AUTHENTICATED });
-            }
+    router.put(
+        '/:id',
+        isAuthenticated,
+        isSelfOrAdmin((req) => req.params.id),
+        async (req: Request, res: Response, next: NextFunction) => {
+            try {
+                const userId = req.params.id;
+                const { confirmPassword, ...updateData } = req.body;
 
-            const userId = req.params.id;
-            const requestUser = req.user as IUser;
-
-            if (!userId) {
-                return next({ status: 400 });
-            }
-
-            if (!(requestUser._id?.toString() === userId || requestUser.isAdmin)) {
-                return next({ status: 403, code: AUTH_ERRORS.FORBIDDEN });
-            }
-
-            const { confirmPassword, ...updateData } = req.body;
-
-            const user = await User.findById(userId);
-            if (!user) {
-                return next({ status: 404, code: AUTH_ERRORS.USER_NOT_FOUND });
-            }
-
-            if (updateData.password) {
-                if (!confirmPassword || updateData.password !== confirmPassword) {
-                    return next({ status: 400, code: USER_ERRORS.PASSWORD_MISMATCH });
+                const user = await User.findById(userId);
+                if (!user) {
+                    return next({ status: 404, code: AUTH_ERRORS.USER_NOT_FOUND });
                 }
-                user.password = confirmPassword;
-            }
 
-            if (updateData.email && updateData.email !== user.email) {
-                const existingUser = await User.findOne({ email: updateData.email });
-                if (existingUser) {
-                    return next({ status: 400, code: USER_ERRORS.DUPLICATE_EMAIL });
+                if (updateData.password) {
+                    if (!confirmPassword || updateData.password !== confirmPassword) {
+                        return next({ status: 400, code: USER_ERRORS.PASSWORD_MISMATCH });
+                    }
+                    user.password = confirmPassword;
                 }
-            }
 
-            if (Object.keys(updateData).length > 0) {
-                Object.assign(user, updateData);
-                await user.save();
-            }
-            // refresh the session
-            req.login(user, (err: string | null) => {
-                if (err) {
-                    logger.error(err);
-                    return next({ status: 500 });
+                if (updateData.email && updateData.email !== user.email) {
+                    const existingUser = await User.findOne({ email: updateData.email });
+                    if (existingUser) {
+                        return next({ status: 400, code: USER_ERRORS.DUPLICATE_EMAIL });
+                    }
                 }
-                res.status(200).json({ userId: user._id });
-            });
-        } catch (err) {
-            logger.error(err);
-            return next({ status: 500 });
-        }
-    });
+
+                if (Object.keys(updateData).length > 0) {
+                    Object.assign(user, updateData);
+                    await user.save();
+                }
+                // refresh the session
+                req.login(user, (err: string | null) => {
+                    if (err) {
+                        logger.error(err);
+                        return next({ status: 500 });
+                    }
+                    res.status(200).json({ userId: user._id });
+                });
+            } catch (err) {
+                logger.error(err);
+                return next({ status: 500 });
+            }
+        },
+    );
 
     return router;
 };

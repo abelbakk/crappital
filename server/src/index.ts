@@ -14,6 +14,7 @@ import { setupSwagger } from './utils/swagger';
 import { currencyRoutes } from './routes/currencyRoutes';
 import { updateExchangeRates } from './services/currencyService';
 import { categoryRoutes } from './routes/categoryRoutes';
+import { accountRoutes } from './routes/accountRoutes';
 
 dotenv.config();
 
@@ -50,6 +51,7 @@ app.use('/core/users', userRoutes(express.Router()));
 app.use('/core/auth', authRoutes(passport, express.Router()));
 app.use('/core/currencies', currencyRoutes(express.Router()));
 app.use('/core/categories', categoryRoutes(express.Router()));
+app.use('/core/accounts', accountRoutes(express.Router()));
 setupSwagger(app);
 app.use(errorHandler);
 
