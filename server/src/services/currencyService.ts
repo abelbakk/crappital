@@ -89,3 +89,23 @@ export const updateExchangeRates = async () => {
         logger.error(error);
     }
 };
+
+export const getExchangeRate = async (fromCurrencyId: string, toCurrencyId: string): Promise<Number> => {
+    try {
+        const [fromCurrency, toCurrency] = await Promise.all([Currency.findById(fromCurrencyId), Currency.findById(toCurrencyId)]);
+
+        if (!fromCurrency || !toCurrency) {
+            throw new Error('One or both currencies not found');
+        }
+
+        const exchangeRate = fromCurrency.exchangeRates.get(toCurrency.code);
+        if (!exchangeRate) {
+            throw new Error(`Exchange rate from ${fromCurrency.code} to ${toCurrency.code} not available`);
+        }
+
+        return exchangeRate;
+    } catch (error) {
+        logger.error(error);
+        throw error;
+    }
+};

@@ -16,6 +16,7 @@ const options = {
             { name: 'Currencies', description: 'Currency info and exchange endpoints' },
             { name: 'Categories', description: 'Transaction category endpoints' },
             { name: 'Accounts', description: 'Account management endpoints' },
+            { name: 'Transactions', description: 'Transaction management endpoints' },
         ],
         components: {
             schemas: {
@@ -117,6 +118,22 @@ const options = {
                         pending: { type: 'number' },
                     },
                     required: ['id', 'userId', 'number', 'currency', 'balance', 'pending'],
+                },
+                Transaction: {
+                    type: 'object',
+                    properties: {
+                        id: { type: 'string', example: '60d0fe4f5311236168a109ce' },
+                        fromAccount: { type: 'string' },
+                        toAccount: { type: 'string' },
+                        amount: { type: 'number' },
+                        currencyFrom: { type: 'string', description: 'Reference to source currency' },
+                        currencyTo: { type: 'string', description: 'Reference to destination currency' },
+                        exchangeRate: { type: 'number', readOnly: true },
+                        timestamp: { type: 'string', format: 'date-time' },
+                        status: { type: 'string', enum: ['pending', 'completed', 'rejected'] },
+                        category: { type: 'string', description: 'Reference to transaction category' },
+                    },
+                    required: ['fromAccount', 'toAccount', 'amount', 'currencyFrom', 'currencyTo'],
                 },
             },
         },

@@ -3,6 +3,8 @@ import { Currency, ICurrency } from '../model/Currency';
 import { Types } from 'mongoose';
 import { convertCurrency } from './currencyService';
 import logger from '../utils/logger';
+import { Request } from 'express';
+import { IUser } from '../model/User';
 
 export const getAllAccounts = async (userId: Types.ObjectId) => {
     try {
@@ -86,4 +88,9 @@ export const deleteAccountById = async (accountId: string) => {
         logger.error(`Error deleting account ${accountId}: ${error}`);
         throw error;
     }
+};
+
+export const getUserId = (req: Request): Types.ObjectId => {
+    const user: IUser = req.user as IUser;
+    return user._id as Types.ObjectId;
 };
