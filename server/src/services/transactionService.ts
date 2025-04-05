@@ -7,9 +7,7 @@ import { getExchangeRate, convertCurrency } from './currencyService';
 
 export const getAllTransactions = async (userId: Types.ObjectId) => {
     try {
-        return await Transaction.find()
-            .or([{ 'fromAccount.userId': userId }, { 'toAccount.userId': userId }])
-            .lean();
+        return await Transaction.find().or([{ 'fromAccount.userId': userId }, { 'toAccount.userId': userId }]);
     } catch (error) {
         logger.error(error);
         throw error;
@@ -18,7 +16,7 @@ export const getAllTransactions = async (userId: Types.ObjectId) => {
 
 export const getTransactionById = async (transactionId: string) => {
     try {
-        return await Transaction.findById(transactionId).lean();
+        return await Transaction.findById(transactionId);
     } catch (error) {
         logger.error(error);
         throw error;

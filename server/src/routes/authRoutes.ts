@@ -75,6 +75,32 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *                 code:
      *                   type: string
      *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
+     *      403:
+     *         description: User not approved
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 403
+     *                 code:
+     *                   type: string
+     *                   example: "AUTH_ERRORS_USER_NOT_APPROVED"
+     *      423:
+     *        description: User account restricted
+     *        content:
+     *          application/json:
+     *           schema:
+     *              type: object
+     *              properties:
+     *                status:
+     *                  type: integer
+     *                  example: 423
+     *                code:
+     *                 type: string
+     *                 example: "AUTH_ERRORS_USER_ACCOUNT_RESTRICTED"
      *       500:
      *         $ref: '#/components/responses/ServerError'
      */
@@ -94,6 +120,30 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
                 if (err) {
                     logger.error(err);
                     return next({ status: 500 });
+                }
+                if (!user.approved) {
+                    req.logout((err) => {
+                        if (err) {
+                            logger.error(err);
+                            return next({ status: 500 });
+                        }
+                        return next({
+                            status: 403,
+                            code: AUTH_ERRORS.USER_NOT_APPROVED,
+                        });
+                    });
+                }
+                if (user.restricted) {
+                    req.logout((err) => {
+                        if (err) {
+                            logger.error(err);
+                            return next({ status: 500 });
+                        }
+                        return next({
+                            status: 423,
+                            code: AUTH_ERRORS.USER_ACCOUNT_RESTRICTED,
+                        });
+                    });
                 }
                 res.status(200).json({ userId: user._id });
             });

@@ -16,6 +16,8 @@ import { updateExchangeRates } from './services/currencyService';
 import { categoryRoutes } from './routes/categoryRoutes';
 import { accountRoutes } from './routes/accountRoutes';
 import { transactionRoutes } from './routes/transactionRoutes';
+import { statisticsRoutes } from './routes/statisticsRoutes';
+import { adminRoutes } from './routes/adminRoutes';
 
 dotenv.config();
 
@@ -54,6 +56,8 @@ app.use('/core/currencies', currencyRoutes(express.Router()));
 app.use('/core/categories', categoryRoutes(express.Router()));
 app.use('/core/accounts', accountRoutes(express.Router()));
 app.use('/core/transactions', transactionRoutes(express.Router()));
+app.use('/core/statistics', statisticsRoutes(express.Router()));
+app.use('/core/admin', adminRoutes(express.Router()));
 setupSwagger(app);
 app.use(errorHandler);
 

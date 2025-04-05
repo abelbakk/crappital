@@ -3,7 +3,7 @@ import logger from '../utils/logger';
 
 export const getAllCategories = async () => {
     try {
-        return await Category.find().lean();
+        return await Category.find();
     } catch (error) {
         logger.error(error);
         throw error;

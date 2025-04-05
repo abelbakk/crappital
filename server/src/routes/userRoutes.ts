@@ -1,4 +1,4 @@
-import { IUser, User } from '../model/User';
+import { User } from '../model/User';
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 import { AUTH_ERRORS, USER_ERRORS } from '../utils/errorHandler';
@@ -105,10 +105,9 @@ export const userRoutes = (router: Router): Router => {
      */
     router.get('/', isAuthenticated, isAdmin, (_: Request, res: Response, next: NextFunction) => {
         User.find()
-            .lean()
+            .select('-password')
             .then((users) => {
-                const usersInfo = users.map(({ password, ...userInfo }: IUser) => userInfo);
-                res.status(200).json(usersInfo);
+                res.status(200).json(users);
             })
             .catch((error) => {
                 logger.error(error);

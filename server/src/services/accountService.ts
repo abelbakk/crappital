@@ -8,7 +8,7 @@ import { IUser } from '../model/User';
 
 export const getAllAccounts = async (userId: Types.ObjectId) => {
     try {
-        return await Account.find({ userId }).populate('currency').lean();
+        return await Account.find({ userId }).populate('currency');
     } catch (error) {
         logger.error(`Error fetching accounts for user ${userId}: ${error}`);
         throw error;
@@ -17,7 +17,7 @@ export const getAllAccounts = async (userId: Types.ObjectId) => {
 
 export const getAccountById = async (accountId: string) => {
     try {
-        return await Account.findById(accountId).populate('currency').lean();
+        return await Account.findById(accountId).populate('currency');
     } catch (error) {
         logger.error(`Error fetching account ${accountId}: ${error}`);
         throw error;

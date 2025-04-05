@@ -17,6 +17,7 @@ const options = {
             { name: 'Categories', description: 'Transaction category endpoints' },
             { name: 'Accounts', description: 'Account management endpoints' },
             { name: 'Transactions', description: 'Transaction management endpoints' },
+            { name: 'Admin', description: 'Administrative endpoints' },
         ],
         components: {
             schemas: {
@@ -134,6 +135,24 @@ const options = {
                         category: { type: 'string', description: 'Reference to transaction category' },
                     },
                     required: ['fromAccount', 'toAccount', 'amount', 'currencyFrom', 'currencyTo'],
+                },
+                SpendingStatistics: {
+                    type: 'object',
+                    properties: {
+                        spendings: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    categoryName: { type: 'string' },
+                                    categoryIcon: { type: 'string' },
+                                    amount: { type: 'number' },
+                                    color: { type: 'string' },
+                                },
+                            },
+                        },
+                        currency: { type: 'string' },
+                    },
                 },
             },
         },

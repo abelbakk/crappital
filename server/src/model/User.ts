@@ -19,6 +19,8 @@ export interface IUser extends Document {
         additionalDetails?: string;
     };
     isAdmin?: boolean;
+    approved: Date | null;
+    restricted: Date | null;
     comparePassword: (candidatePassword: string, callback: (error: Error | null, isMatch: boolean) => void) => void;
 }
 
@@ -40,6 +42,8 @@ const UserSchema = new Schema<IUser>({
     phone: { type: String, required: true },
     address: AddressSchema,
     isAdmin: { type: Boolean, required: false },
+    approved: { type: Date, required: false, default: null },
+    restricted: { type: Date, required: false, default: null },
 });
 
 UserSchema.pre<IUser>('save', function (next) {
