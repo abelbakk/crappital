@@ -75,7 +75,7 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *                 code:
      *                   type: string
      *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
-     *      403:
+     *       403:
      *         description: User not approved
      *         content:
      *           application/json:
@@ -88,19 +88,19 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *                 code:
      *                   type: string
      *                   example: "AUTH_ERRORS_USER_NOT_APPROVED"
-     *      423:
-     *        description: User account restricted
-     *        content:
-     *          application/json:
-     *           schema:
-     *              type: object
-     *              properties:
-     *                status:
-     *                  type: integer
-     *                  example: 423
-     *                code:
-     *                 type: string
-     *                 example: "AUTH_ERRORS_USER_ACCOUNT_RESTRICTED"
+     *       423:
+     *         description: User account restricted
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 423
+     *                 code:
+     *                   type: string
+     *                   example: "AUTH_ERRORS_USER_ACCOUNT_RESTRICTED"
      *       500:
      *         $ref: '#/components/responses/ServerError'
      */

@@ -124,7 +124,7 @@ export const categoryRoutes = (router: Router): Router => {
      *         content:
      *           application/json:
      *             schema:
-     *               $ref: '#/components/schemas/Category
+     *               $ref: '#/components/schemas/Category'
      *       400:
      *         $ref: '#/components/responses/BadRequest'
      *       401:

@@ -20,6 +20,104 @@ const options = {
             { name: 'Admin', description: 'Administrative endpoints' },
         ],
         components: {
+            responses: {
+                BadRequest: {
+                    description: 'Bad request, invalid or missing fields',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    status: {
+                                        type: 'integer',
+                                        example: 400,
+                                    },
+                                    code: {
+                                        type: 'string',
+                                        example: 'GENERAL_ERRORS_MISSING_REQUEST_PARAMETERS',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                Unauthorized: {
+                    description: 'Unauthorized, user not authenticated',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    status: {
+                                        type: 'integer',
+                                        example: 401,
+                                    },
+                                    code: {
+                                        type: 'string',
+                                        example: 'AUTH_ERRORS_NOT_AUTHENTICATED',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                Forbidden: {
+                    description: 'Forbidden, user does not have the required permissions',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    status: {
+                                        type: 'integer',
+                                        example: 403,
+                                    },
+                                    code: {
+                                        type: 'string',
+                                        example: 'AUTH_ERRORS_FORBIDDEN',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                NotFound: {
+                    description: 'Resource not found',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    status: {
+                                        type: 'integer',
+                                        example: 404,
+                                    },
+                                    code: {
+                                        type: 'string',
+                                        example: 'GENERAL_ERRORS_NOT_FOUND',
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                ServerError: {
+                    description: 'Internal server error',
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {
+                                    status: {
+                                        type: 'integer',
+                                        example: 500,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
             schemas: {
                 User: {
                     type: 'object',
@@ -152,104 +250,6 @@ const options = {
                             },
                         },
                         currency: { type: 'string' },
-                    },
-                },
-            },
-        },
-        responses: {
-            BadRequest: {
-                description: 'Bad request, invalid or missing fields',
-                content: {
-                    'application/json': {
-                        schema: {
-                            type: 'object',
-                            properties: {
-                                status: {
-                                    type: 'integer',
-                                    example: 400,
-                                },
-                                code: {
-                                    type: 'string',
-                                    example: 'GENERAL_ERRORS_MISSING_REQUEST_PARAMETERS',
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            Unauthorized: {
-                description: 'Unauthorized, user not authenticated',
-                content: {
-                    'application/json': {
-                        schema: {
-                            type: 'object',
-                            properties: {
-                                status: {
-                                    type: 'integer',
-                                    example: 401,
-                                },
-                                code: {
-                                    type: 'string',
-                                    example: 'AUTH_ERRORS_NOT_AUTHENTICATED',
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            Forbidden: {
-                description: 'Forbidden, user does not have the required permissions',
-                content: {
-                    'application/json': {
-                        schema: {
-                            type: 'object',
-                            properties: {
-                                status: {
-                                    type: 'integer',
-                                    example: 403,
-                                },
-                                code: {
-                                    type: 'string',
-                                    example: 'AUTH_ERRORS_FORBIDDEN',
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            NotFound: {
-                description: 'Resource not found',
-                content: {
-                    'application/json': {
-                        schema: {
-                            type: 'object',
-                            properties: {
-                                status: {
-                                    type: 'integer',
-                                    example: 404,
-                                },
-                                code: {
-                                    type: 'string',
-                                    example: 'GENERAL_ERRORS_NOT_FOUND',
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            ServerError: {
-                description: 'Internal server error',
-                content: {
-                    'application/json': {
-                        schema: {
-                            type: 'object',
-                            properties: {
-                                status: {
-                                    type: 'integer',
-                                    example: 500,
-                                },
-                            },
-                        },
                     },
                 },
             },
