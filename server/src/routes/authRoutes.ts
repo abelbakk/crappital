@@ -122,7 +122,7 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
                     return next({ status: 500 });
                 }
                 if (!user.approved) {
-                    req.logout((err) => {
+                    return req.logout((err) => {
                         if (err) {
                             logger.error(err);
                             return next({ status: 500 });
@@ -134,7 +134,7 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
                     });
                 }
                 if (user.restricted) {
-                    req.logout((err) => {
+                    return req.logout((err) => {
                         if (err) {
                             logger.error(err);
                             return next({ status: 500 });

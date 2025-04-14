@@ -10,7 +10,7 @@ export const isAuthenticated = (req: Request, _: Response, next: NextFunction) =
 };
 
 export const isAdmin = (req: Request, _: Response, next: NextFunction) => {
-    if (!req.user || !(req.user as IUser).isAdmin) {
+    if (!req.user || !(req.user as IUser).admin) {
         return next({ status: 403, code: AUTH_ERRORS.NOT_ADMIN });
     }
     next();
@@ -25,7 +25,7 @@ export const isSelfOrAdmin = (getResourceUserId: (req: Request) => string) => {
             return next({ status: 400, code: GENERAL_ERRORS.MISSING_REQUEST_PARAMETERS });
         }
 
-        if (!(requestUser._id?.toString() === userId || requestUser.isAdmin)) {
+        if (!(requestUser._id?.toString() === userId || requestUser.admin)) {
             return next({ status: 403, code: AUTH_ERRORS.FORBIDDEN });
         }
         next();

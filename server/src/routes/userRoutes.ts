@@ -2,7 +2,7 @@ import { User } from '../model/User';
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 import { AUTH_ERRORS, USER_ERRORS } from '../utils/errorHandler';
-import { isAdmin, isAuthenticated, isSelfOrAdmin } from '../middleware/authMiddleware';
+import { isAuthenticated, isSelfOrAdmin } from '../middleware/authMiddleware';
 
 export const userRoutes = (router: Router): Router => {
     /**
@@ -78,41 +78,6 @@ export const userRoutes = (router: Router): Router => {
             logger.error(err);
             return next({ status: 500 });
         }
-    });
-
-    /**
-     * @swagger
-     * /core/users:
-     *   get:
-     *     summary: Get all users (requires administrator permissions)
-     *     description: Returns a list of all registered users. Only accessible by admins.
-     *     tags: [Users]
-     *     responses:
-     *       200:
-     *         description: Successfully retrieved the list of users
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: array
-     *               items:
-     *                 $ref: '#/components/schemas/UserInfo'
-     *       401:
-     *         $ref: '#/components/responses/Unauthorized'
-     *       403:
-     *         $ref: '#/components/responses/Forbidden'
-     *       500:
-     *         $ref: '#/components/responses/ServerError'
-     */
-    router.get('/', isAuthenticated, isAdmin, (_: Request, res: Response, next: NextFunction) => {
-        User.find()
-            .select('-password')
-            .then((users) => {
-                res.status(200).json(users);
-            })
-            .catch((error) => {
-                logger.error(error);
-                next({ status: 500 });
-            });
     });
 
     /**
@@ -270,6 +235,53 @@ export const userRoutes = (router: Router): Router => {
                 });
             } catch (err) {
                 logger.error(err);
+                return next({ status: 500 });
+            }
+        },
+    );
+
+    /**
+     * @swagger
+     * /core/users/{id}:
+     *   get:
+     *     summary: Get user details
+     *     description: Retrieves user details by ID.
+     *     tags: [Users]
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: The ID of the user to retrieve
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved the list of users
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/UserInfo'
+     *       401:
+     *         $ref: '#/components/responses/Unauthorized'
+     *       403:
+     *         $ref: '#/components/responses/Forbidden'
+     *       500:
+     *         $ref: '#/components/responses/ServerError'
+     */
+    router.get(
+        '/:id',
+        isAuthenticated,
+        isSelfOrAdmin((req) => req.params.id),
+        async (req: Request, res: Response, next: NextFunction) => {
+            const userId = req.params.id;
+            try {
+                const user = await User.findById(userId).select('-password');
+                if (!user) {
+                    return next({ status: 404, code: AUTH_ERRORS.USER_NOT_FOUND });
+                }
+                res.status(200).json({ userId: user._id, ...user.toObject() });
+            } catch (error) {
+                logger.error(error);
                 return next({ status: 500 });
             }
         },

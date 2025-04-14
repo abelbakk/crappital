@@ -3,6 +3,7 @@ import { isAuthenticated, isAdmin } from '../middleware/authMiddleware';
 import { getUnapprovedUsers, approveUser, restrictUser, getPendingTransactions, approveTransaction, rejectTransaction } from '../services/adminService';
 import { GENERAL_ERRORS } from '../utils/errorHandler';
 import logger from '../utils/logger';
+import { User } from '../model/User';
 
 export const adminRoutes = (router: Router): Router => {
     /**
@@ -254,6 +255,41 @@ export const adminRoutes = (router: Router): Router => {
             logger.error(error);
             next({ status: 500 });
         }
+    });
+
+    /**
+     * @swagger
+     * /core/admin/users:
+     *   get:
+     *     summary: Get all users
+     *     description: Returns a list of all registered users. Only accessible by admins.
+     *     tags: [Admin]
+     *     responses:
+     *       200:
+     *         description: Successfully retrieved the list of users
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: array
+     *               items:
+     *                 $ref: '#/components/schemas/UserInfo'
+     *       401:
+     *         $ref: '#/components/responses/Unauthorized'
+     *       403:
+     *         $ref: '#/components/responses/Forbidden'
+     *       500:
+     *         $ref: '#/components/responses/ServerError'
+     */
+    router.get('/users', isAuthenticated, isAdmin, (_: Request, res: Response, next: NextFunction) => {
+        User.find()
+            .select('-password')
+            .then((users) => {
+                res.status(200).json(users);
+            })
+            .catch((error) => {
+                logger.error(error);
+                next({ status: 500 });
+            });
     });
 
     return router;

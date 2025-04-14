@@ -16,9 +16,9 @@ export interface IUser extends Document {
         city: string;
         street: string;
         number: string;
-        additionalDetails?: string;
+        additionalDetails: string | null;
     };
-    isAdmin?: boolean;
+    admin: boolean | null;
     approved: Date | null;
     restricted: Date | null;
     comparePassword: (candidatePassword: string, callback: (error: Error | null, isMatch: boolean) => void) => void;
@@ -41,7 +41,7 @@ const UserSchema = new Schema<IUser>({
     lastName: { type: String, required: true },
     phone: { type: String, required: true },
     address: AddressSchema,
-    isAdmin: { type: Boolean, required: false },
+    admin: { type: Boolean, required: false, default: null },
     approved: { type: Date, required: false, default: null },
     restricted: { type: Date, required: false, default: null },
 });

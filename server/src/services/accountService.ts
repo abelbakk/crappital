@@ -1,7 +1,6 @@
 import { Account } from '../model/Account';
-import { Currency, ICurrency } from '../model/Currency';
+import { Currency } from '../model/Currency';
 import { Types } from 'mongoose';
-import { convertCurrency } from './currencyService';
 import logger from '../utils/logger';
 import { Request } from 'express';
 import { IUser } from '../model/User';
@@ -31,10 +30,10 @@ export const createAccount = async (accountData: { userId: string; name: string;
             throw new Error(`Currency "${accountData.currency}" not found`);
         }
 
-        // TODO[AB]: generate 30 random numbers
-
+        const number: string = Array.from({ length: 30 }, () => Math.floor(Math.random() * 10)).join('');
         const account = new Account({
             ...accountData,
+            number: number,
             currency: currency._id,
         });
         return await account.save();
@@ -44,32 +43,12 @@ export const createAccount = async (accountData: { userId: string; name: string;
     }
 };
 
-export const updateAccountById = async (accountId: string, updateData: { currency?: string; name?: string }) => {
+export const updateAccountById = async (accountId: string, updateData: { name?: string }) => {
     try {
         const account = await Account.findById(accountId);
         if (!account) {
             throw new Error(`Account with ID ${accountId} not found`);
         }
-
-        if (updateData.currency) {
-            const newCurrency: ICurrency | null = await Currency.findOne({ code: updateData.currency.toUpperCase() });
-            if (!newCurrency) {
-                throw new Error(`Currency "${updateData.currency}" not found`);
-            }
-
-            const currentCurrencyId = account.currency.toString();
-            const newCurrencyId = newCurrency._id as Types.ObjectId;
-
-            if (newCurrencyId.toString() !== currentCurrencyId) {
-                const newBalance = await convertCurrency(currentCurrencyId, newCurrency.code, account.balance.toString());
-                const newPending = await convertCurrency(currentCurrencyId, newCurrency.code, account.pending.toString());
-
-                account.balance = newBalance;
-                account.pending = newPending;
-                account.currency = newCurrencyId;
-            }
-        }
-
         if (updateData.name) {
             account.name = updateData.name;
         }

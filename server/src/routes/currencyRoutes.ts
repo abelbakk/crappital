@@ -8,7 +8,7 @@ import { isAdmin, isAuthenticated } from '../middleware/authMiddleware';
 export const currencyRoutes = (router: Router): Router => {
     /**
      * @swagger
-     * /currencies:
+     * /core/currencies:
      *   get:
      *     summary: Retrieve available currencies
      *     description: Returns a list of all available currencies that the server handles.
@@ -30,6 +30,7 @@ export const currencyRoutes = (router: Router): Router => {
      */
     router.get('/', isAuthenticated, async (_: Request, res: Response, next: NextFunction) => {
         Currency.find()
+            .lean()
             .then((currencies) => {
                 const currencyInfo = currencies.map(({ exchangeRates, ...currencyInfo }) => currencyInfo);
                 res.status(200).json(currencyInfo);
@@ -42,7 +43,7 @@ export const currencyRoutes = (router: Router): Router => {
 
     /**
      * @swagger
-     * /currencies:
+     * /core/currencies:
      *   put:
      *     summary: Manually update exchange rates
      *     description: Fetches and updates the latest exchange rates from the European Central Bank.
@@ -68,7 +69,7 @@ export const currencyRoutes = (router: Router): Router => {
 
     /**
      * @swagger
-     * /currencies/convert:
+     * /core/currencies/convert:
      *   get:
      *     summary: Convert currency
      *     description: Converts an amount from one currency to another using the stored exchange rates.
