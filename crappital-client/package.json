@@ -4,10 +4,12 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "build": "ng build",
+        "generate": "openapi-generator-cli generate -g typescript-angular -i http://localhost:5000/openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model",
+        "build": "openapi-generator-cli generate -g typescript-angular -i http://localhost:5000/openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model && ng build",
         "watch": "ng build --watch --configuration development",
         "format": "prettier --write 'src/**/*.{ts,json}'",
-        "test": "ng test"
+        "test": "ng test",
+        "clean": "rimraf src/api-client"
     },
     "private": true,
     "dependencies": {
@@ -34,6 +36,8 @@
         "karma-jasmine": "~5.1.0",
         "karma-jasmine-html-reporter": "~2.1.0",
         "prettier": "^3.5.3",
-        "typescript": "~5.7.2"
+        "typescript": "~5.7.2",
+        "@openapitools/openapi-generator-cli": "^2.18.4",
+        "rimraf": "^6.0.1"
     }
 }
