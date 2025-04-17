@@ -6,6 +6,7 @@ import expressSession from 'express-session';
 import passport from 'passport';
 import mongoose from 'mongoose';
 import logger from './utils/logger';
+import cors from 'cors';
 import { configurePassport } from './passport/passport';
 import { errorHandler } from './utils/errorHandler';
 import { userRoutes } from './routes/userRoutes';
@@ -37,6 +38,19 @@ mongoose
     .catch((error) => {
         logger.error(`Could not connect to MongoDB: ${error.message}`);
     });
+
+const whitelist = ['*', 'http://localhost:4200'];
+const corsOptions = {
+    origin: (origin: string | undefined, callback: (err: Error | null, allowed?: boolean) => void) => {
+        if (whitelist.indexOf(origin!) !== -1 || whitelist.includes('*')) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS.'));
+        }
+    },
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
