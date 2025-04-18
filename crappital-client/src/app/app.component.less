@@ -1,0 +1,61 @@
+@import '../styles.less';
+
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    &.full-width {
+        height: 100vh;
+    }
+}
+
+.app-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20%;
+
+    &.full-width {
+        padding: 0;
+        flex-direction: column-reverse;
+        overflow: hidden;
+    }
+
+    @media screen and (max-width: 767px) {
+        height: 100vh;
+        padding: 0 5%;
+    }
+}
+
+footer {
+    background-color: @color-raisin-black;
+    padding: 1rem 0;
+    height: 2.5rem;
+
+    @media screen and (max-width: 767px) {
+        display: none;
+    }
+
+    .footer-content {
+        @media screen and (min-width: 768px) {
+            padding: 0 30%;
+        }
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: @color-antique-white;
+        font-family: 'PT Sans', sans-serif;
+        font-size: 0.9rem;
+
+        button {
+            color: @color-antique-white;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+}

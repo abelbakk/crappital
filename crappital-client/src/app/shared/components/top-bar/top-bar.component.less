@@ -1,0 +1,51 @@
+@import '../../../../styles.less';
+
+mat-toolbar {
+    background-color: @color-raisin-black;
+    border-bottom: 1px solid @color-dark-green;
+
+    @media screen and (min-width: 768px) {
+        padding: 0 20%;
+    }
+
+    @media screen and (max-width: 767px) {
+        padding: 0 1rem;
+    }
+}
+
+.logo {
+    font-family: 'Boldonse', sans-serif;
+    color: @color-crayola;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 1rem;
+    text-transform: lowercase;
+
+    @media screen and (max-width: 767px) {
+        font-size: 1.2rem;
+        letter-spacing: 0.5rem;
+    }
+}
+
+.home-link {
+    cursor: pointer;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .user-name {
+        color: @color-antique-white;
+        font-family: 'PT Sans', sans-serif;
+    }
+}
+
+button {
+    color: @color-antique-white;
+}

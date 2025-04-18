@@ -1,12 +1,19 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { TopBarComponent } from './shared/components/top-bar/top-bar.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet],
+    standalone: true,
+    imports: [RouterOutlet, TopBarComponent, MatIconModule, MatButtonModule],
     templateUrl: './app.component.html',
     styleUrl: './app.component.less',
 })
 export class AppComponent {
     title = 'crappital-client';
+
+    constructor(public router: Router) {}
 }

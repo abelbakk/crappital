@@ -1,0 +1,132 @@
+<div class="login-container">
+    <mat-card>
+        @if (!showSignup) {
+            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                <mat-card-content>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" type="email" required />
+                        <mat-error>{{ getErrorMessage(loginForm, 'email') }}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput formControlName="password" type="password" required />
+                        <mat-error>{{ getErrorMessage(loginForm, 'password') }}</mat-error>
+                    </mat-form-field>
+
+                    @if (loginForm.hasError('invalidCredentials')) {
+                        <div class="error-message">Invalid email or password</div>
+                    }
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+                </mat-card-actions>
+            </form>
+        } @else {
+            <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+                <mat-card-content>
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="firstName" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'firstName') }}</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="lastName" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'lastName') }}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" type="email" required />
+                        <mat-error>{{ getErrorMessage(signupForm, 'email') }}</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Phone</mat-label>
+                        <input matInput formControlName="phone" type="tel" required />
+                        <mat-error>{{ getErrorMessage(signupForm, 'phone') }}</mat-error>
+                    </mat-form-field>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Country</mat-label>
+                            <input matInput formControlName="country" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'country') }}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Postal Code</mat-label>
+                            <input matInput formControlName="postalCode" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'postalCode') }}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>County</mat-label>
+                            <input matInput formControlName="county" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'county') }}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput formControlName="city" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'city') }}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Street</mat-label>
+                            <input matInput formControlName="street" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'street') }}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Number</mat-label>
+                            <input matInput formControlName="number" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'number') }}</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Additional Details</mat-label>
+                        <textarea matInput formControlName="additionalDetails" rows="1"></textarea>
+                    </mat-form-field>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="password" type="password" required />
+                            <mat-error>{{ getErrorMessage(signupForm, 'password') }}</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Confirm Password</mat-label>
+                            <input matInput formControlName="confirmPassword" type="password" required />
+                            <mat-error>
+                                @if (signupForm.hasError('passwordMismatch')) {
+                                    Passwords do not match
+                                } @else {
+                                    {{ getErrorMessage(signupForm, 'confirmPassword') }}
+                                }
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!signupForm.valid">Create Account</button>
+                </mat-card-actions>
+            </form>
+        }
+
+        <mat-card-footer>
+            <button mat-button type="button" (click)="toggleForm()">
+                {{ showSignup ? 'Already have an account? Login' : 'Need an account? Sign up' }}
+            </button>
+        </mat-card-footer>
+    </mat-card>
+</div>

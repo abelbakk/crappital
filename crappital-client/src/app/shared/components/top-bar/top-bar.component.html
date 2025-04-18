@@ -1,0 +1,16 @@
+<mat-toolbar>
+    <a class="home-link" (click)="navigate('/home')"><span class="logo">crappital</span></a>
+    <span class="spacer"></span>
+    @if (!isLoggedIn) {
+        <button type="button" (click)="navigate('/login')" mat-icon-button>
+            <mat-icon>account_circle</mat-icon>
+        </button>
+    } @else {
+        <div class="user-info">
+            <span class="user-name">{{ userInfo?.firstName }} {{ userInfo?.lastName }}</span>
+            <button mat-icon-button (click)="logout()">
+                <mat-icon>logout</mat-icon>
+            </button>
+        </div>
+    }
+</mat-toolbar>

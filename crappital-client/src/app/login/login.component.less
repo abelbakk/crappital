@@ -1,0 +1,61 @@
+@import '../../styles.less';
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: 100%;
+
+    @media screen and (max-width: 767px) {
+        padding: 0.5rem;
+    }
+
+    mat-card {
+        width: 100%;
+        max-width: 30rem;
+
+        mat-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .form-row {
+                display: flex;
+                gap: 1rem;
+
+                @media screen and (max-width: 767px) {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+            }
+
+            mat-form-field {
+                width: 100%;
+            }
+
+            .error-message {
+                color: @color-dark-green;
+                margin-bottom: 1rem;
+                text-align: center;
+            }
+        }
+
+        mat-card-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 1rem;
+
+            button {
+                min-width: 120px;
+            }
+        }
+
+        mat-card-footer {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.12);
+        }
+    }
+}
