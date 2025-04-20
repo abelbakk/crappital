@@ -4,7 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../../../generated/core-api/api/auth.service';
 import { UserInfo } from '../../../generated/core-api/model/user-info';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-top-bar',
@@ -24,6 +25,10 @@ export class TopBarComponent implements OnInit {
 
     ngOnInit() {
         this.checkAuthStatus();
+
+        this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+            this.checkAuthStatus();
+        });
     }
 
     private checkAuthStatus() {
