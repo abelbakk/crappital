@@ -68,6 +68,9 @@ UserSchema.methods.comparePassword = function (candidatePassword: string, callba
         if (error) {
             callback(error, false);
         }
+        if (!isMatch) {
+            return callback(new Error('Password does not match'), false);
+        }
         callback(null, isMatch);
     });
 };
