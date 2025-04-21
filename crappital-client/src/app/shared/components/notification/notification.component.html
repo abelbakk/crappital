@@ -1,0 +1,4 @@
+<div *ngIf="visible" class="notification" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+    <span>{{ notification }}</span>
+    <div class="decay-bar" [style.width.%]="decay"></div>
+</div>

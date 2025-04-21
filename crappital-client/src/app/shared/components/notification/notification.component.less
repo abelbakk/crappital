@@ -1,0 +1,25 @@
+@import '../../../../styles.less';
+
+.notification {
+    position: fixed;
+    left: 50%;
+    bottom: 4rem;
+    transform: translateX(-50%);
+    background: @color-antique-white;
+    color: @color-raisin-black;
+    border-radius: 0.5rem;
+    padding: 1rem 2rem 1rem 1rem;
+    min-width: 25rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.decay-bar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 0.25rem;
+    background: @color-crayola;
+    transition: width 0.04s linear;
+}
