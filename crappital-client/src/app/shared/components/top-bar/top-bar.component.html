@@ -1,5 +1,9 @@
 <mat-toolbar>
-    <a class="home-link" (click)="navigate('/home')"><span class="logo">crappital</span></a>
+    @if (isLoggedIn) {
+        <a class="home-link" (click)="navigate('/dashboard')"><span class="logo">crappital</span></a>
+    } @else {
+        <a class="home-link" (click)="navigate('/home')"><span class="logo">crappital</span></a>
+    }
     <span class="spacer"></span>
     @if (!isLoggedIn) {
         <button type="button" (click)="navigate('/login')" mat-icon-button>

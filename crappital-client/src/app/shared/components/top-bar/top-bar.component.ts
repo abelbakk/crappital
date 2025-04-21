@@ -49,6 +49,7 @@ export class TopBarComponent implements OnInit {
             next: () => {
                 this.isLoggedIn = false;
                 this.userInfo = undefined;
+                this.navigate('/home');
             },
         });
     }

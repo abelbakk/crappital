@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
         if (this.loginForm.valid) {
             const { email, password } = this.loginForm.value;
             this.authService.coreAuthSessionPost({ email, password }).subscribe({
-                next: () => this.router.navigate(['/home']),
+                next: () => this.router.navigate(['/dashboard']),
                 error: (_) => {},
             });
         }
@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit {
                             email: userData.email,
                             password: userData.password,
                         })
-                        .subscribe(() => this.router.navigate(['/home']));
+                        .subscribe(() => this.router.navigate(['/dashboard']));
                 },
                 error: (_) => {},
             });
