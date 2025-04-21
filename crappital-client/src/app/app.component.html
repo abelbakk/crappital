@@ -1,9 +1,22 @@
 <div class="app-container" [class.full-width]="router.url === '/home'">
     <app-top-bar></app-top-bar>
-    <div class="app-content" [class.full-width]="router.url === '/home'">
-        <router-outlet></router-outlet>
-        <app-notification></app-notification>
-    </div>
+    @if (router.url === '/home') {
+        <div class="app-content" [class.full-width]="true">
+            <router-outlet></router-outlet>
+            <app-notification></app-notification>
+        </div>
+    } @else {
+        <div class="app-content">
+            <div class="app-content-side"></div>
+            <div class="app-content-main">
+                <router-outlet></router-outlet>
+                <app-notification></app-notification>
+            </div>
+            <div class="app-content-side">
+                <app-navigation-dock></app-navigation-dock>
+            </div>
+        </div>
+    }
     <footer>
         <div class="footer-content">
             <div class="footer-left">© 2024 crappital ltd. All rights somewhat reserved.</div>

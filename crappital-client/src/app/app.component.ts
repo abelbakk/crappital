@@ -4,11 +4,12 @@ import { TopBarComponent } from './shared/components/top-bar/top-bar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NotificationComponent } from './shared/components/notification/notification.component';
+import { NavigationDockComponent } from './shared/components/navigation-dock/navigation-dock.component';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet, TopBarComponent, MatIconModule, MatButtonModule, NotificationComponent],
+    imports: [RouterOutlet, TopBarComponent, MatIconModule, MatButtonModule, NotificationComponent, NavigationDockComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.less',
 })

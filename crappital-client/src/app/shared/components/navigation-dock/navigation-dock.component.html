@@ -1,0 +1,28 @@
+@if (isLoggedIn) {
+    <nav class="navigation-dock">
+        @for (item of navItems; track item.route) {
+            @if (item.admin && isAdmin) {
+                <a
+                    [routerLink]="item.route"
+                    [ngClass]="{ 'navigation-dock-icon': true, active: isActive(item.route) }"
+                    matTooltip="{{ item.label }}"
+                    matTooltipPosition="left"
+                    [attr.aria-label]="item.label"
+                >
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                </a>
+            }
+            @if (!item.admin) {
+                <a
+                    [routerLink]="item.route"
+                    [ngClass]="{ 'navigation-dock-icon': true, active: isActive(item.route) }"
+                    matTooltip="{{ item.label }}"
+                    matTooltipPosition="left"
+                    [attr.aria-label]="item.label"
+                >
+                    <mat-icon>{{ item.icon }}</mat-icon>
+                </a>
+            }
+        }
+    </nav>
+}

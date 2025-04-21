@@ -1,0 +1,30 @@
+@import '../../../../styles.less';
+
+.navigation-dock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+
+    @media screen and (max-width: 767px) {
+        flex-direction: row;
+        justify-content: center;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        gap: 2rem;
+    }
+}
+
+.navigation-dock-icon {
+    color: @color-antique-white;
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navigation-dock-icon.active {
+    color: @color-crayola;
+    background: fade(@color-crayola, 10%);
+}
