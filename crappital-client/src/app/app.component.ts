@@ -3,7 +3,7 @@ import { Router, RouterOutlet } from '@angular/router';
 import { TopBarComponent } from './shared/components/top-bar/top-bar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NotificationComponent } from "./shared/components/notification/notification.component";
+import { NotificationComponent } from './shared/components/notification/notification.component';
 
 @Component({
     selector: 'app-root',
