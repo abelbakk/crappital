@@ -14,10 +14,6 @@
                         <input matInput formControlName="password" type="password" required />
                         <mat-error>{{ getErrorMessage(loginForm, 'password') }}</mat-error>
                     </mat-form-field>
-
-                    @if (loginForm.hasError('invalidCredentials')) {
-                        <div class="error-message">Invalid email or password</div>
-                    }
                 </mat-card-content>
                 <mat-card-actions>
                     <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
@@ -125,7 +121,7 @@
 
         <mat-card-footer>
             <button mat-button type="button" (click)="toggleForm()">
-                {{ showSignup ? 'Already have an account? Login' : 'Need an account? Sign up' }}
+                {{ showSignup ? 'Already have an account? Log in' : 'Need an account? Sign up' }}
             </button>
         </mat-card-footer>
     </mat-card>

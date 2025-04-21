@@ -72,11 +72,7 @@ export class LoginComponent implements OnInit {
             const { email, password } = this.loginForm.value;
             this.authService.coreAuthSessionPost({ email, password }).subscribe({
                 next: () => this.router.navigate(['/home']),
-                error: (error) => {
-                    if (error.status === 400) {
-                        this.loginForm.setErrors({ invalidCredentials: true });
-                    }
-                },
+                error: (_) => {},
             });
         }
     }
@@ -108,13 +104,7 @@ export class LoginComponent implements OnInit {
                         })
                         .subscribe(() => this.router.navigate(['/home']));
                 },
-                error: (error) => {
-                    if (error.status === 400) {
-                        if (error.error.code === 'USER_ERRORS_DUPLICATE_EMAIL') {
-                            this.signupForm.get('email')?.setErrors({ duplicateEmail: true });
-                        }
-                    }
-                },
+                error: (_) => {},
             });
         }
     }
