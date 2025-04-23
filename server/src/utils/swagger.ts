@@ -212,7 +212,7 @@ const options = {
                 Account: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string', example: '60d0fe4f5311236168a109cd' },
+                        _id: { type: 'string', example: '60d0fe4f5311236168a109cd' },
                         userId: { type: 'string' },
                         name: { type: 'string' },
                         number: { type: 'string' },
@@ -225,7 +225,7 @@ const options = {
                 Transaction: {
                     type: 'object',
                     properties: {
-                        id: { type: 'string', example: '60d0fe4f5311236168a109ce' },
+                        _id: { type: 'string', example: '60d0fe4f5311236168a109ce' },
                         fromAccount: { type: 'string' },
                         toAccount: { type: 'string' },
                         amount: { type: 'number' },

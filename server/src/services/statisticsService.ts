@@ -29,7 +29,13 @@ export const getSpendingStatistics = async (
         const transactions = await Transaction.find({
             fromAccount: { $in: accountIds },
             timestamp: { $gte: fromDate, $lte: toDate },
-        }).populate(['category', 'currencyFrom', 'fromAccount']);
+        })
+            .populate('category')
+            .populate({
+                path: 'fromAccount',
+                populate: { path: 'currency', model: 'Currency' },
+            })
+            .populate('currencyFrom');
         const spendingMap = new Map<string, { amount: number; icon: string }>();
         const baseCurrency = accounts[0].currency as any;
 

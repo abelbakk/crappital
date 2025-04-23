@@ -1401,6 +1401,7 @@ db.transactions.insertMany([
     currencyTo: currencies_USD._id,
     exchangeRate: 1.1057,
     status: "pending",
+	timestamp: new Date("2025-04-23"),
     category: categories_entertainment_id,
   },
   {
@@ -1411,6 +1412,7 @@ db.transactions.insertMany([
     currencyTo: currencies_HUF._id,
     exchangeRate: 405.7,
     status: "pending",
+	timestamp: new Date("2025-04-23"),
     category: categories_health_id,
   },
   {
@@ -1421,6 +1423,7 @@ db.transactions.insertMany([
     currencyTo: currencies_EUR._id,
     exchangeRate: 0.9044044496698924,
     status: "pending",
+	timestamp: new Date("2025-04-23"),
     category: categories_shopping_id,
   },
   {
@@ -1431,6 +1434,7 @@ db.transactions.insertMany([
     currencyTo: currencies_JPY._id,
     exchangeRate: 145.21117843899793,
     status: "pending",
+	timestamp: new Date("2025-04-23"),
     category: categories_travel_id,
   },
   {
@@ -1441,6 +1445,7 @@ db.transactions.insertMany([
     currencyTo: currencies_HUF._id,
     exchangeRate: 366.91688523107536,
     status: "pending",
+	timestamp: new Date("2025-04-23"),
     category: categories_entertainment_id,
   },
   {
@@ -1451,6 +1456,7 @@ db.transactions.insertMany([
     currencyTo: currencies_EUR._id,
     exchangeRate: 0.00622820129546587,
     status: "pending",
+	timestamp: new Date("2025-04-23"),
     category: categories_health_id,
   },
   {
@@ -1461,6 +1467,7 @@ db.transactions.insertMany([
     currencyTo: currencies_EUR._id,
     exchangeRate: 0.00622820129546587,
     status: "completed",
+	timestamp: new Date("2025-04-23"),
     category: categories_shopping_id,
   },
   {
@@ -1471,6 +1478,7 @@ db.transactions.insertMany([
     currencyTo: currencies_EUR._id,
     exchangeRate: 0.002464875523786049,
     status: "completed",
+	timestamp: new Date("2025-04-23"),
     category: categories_travel_id,
   },
   {
@@ -1481,6 +1489,7 @@ db.transactions.insertMany([
     currencyTo: currencies_USD._id,
     exchangeRate: 0.002725412866650234,
     status: "completed",
+	timestamp: new Date("2025-04-23"),
     category: categories_entertainment_id,
   },
   {
@@ -1491,6 +1500,7 @@ db.transactions.insertMany([
     currencyTo: currencies_JPY._id,
     exchangeRate: 160.56,
     status: "completed",
+	timestamp: new Date("2025-04-23"),
     category: categories_health_id,
   },
   {
@@ -1501,6 +1511,7 @@ db.transactions.insertMany([
     currencyTo: currencies_HUF._id,
     exchangeRate: 366.91688523107536,
     status: "completed",
+	timestamp: new Date("2025-04-23"),
     category: categories_shopping_id,
   },
   {
@@ -1511,6 +1522,7 @@ db.transactions.insertMany([
     currencyTo: currencies_USD._id,
     exchangeRate: 0.006886522172396611,
     status: "rejected",
+	timestamp: new Date("2025-04-23"),
     category: categories_travel_id,
   },
   {
@@ -1521,6 +1533,7 @@ db.transactions.insertMany([
     currencyTo: currencies_USD._id,
     exchangeRate: 0.002725412866650234,
     status: "rejected",
+	timestamp: new Date("2025-04-23"),
     category: categories_entertainment_id,
   },
   {
@@ -1531,6 +1544,7 @@ db.transactions.insertMany([
     currencyTo: currencies_HUF._id,
     exchangeRate: 366.91688523107536,
     status: "rejected",
+	timestamp: new Date("2025-04-23"),
     category: categories_shopping_id,
   },
 ]);
