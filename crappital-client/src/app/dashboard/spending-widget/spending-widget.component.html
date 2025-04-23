@@ -1,0 +1,23 @@
+<mat-card class="widget-card">
+    <mat-card-title>
+        {{ account?.name || 'Overall Spending' }}
+    </mat-card-title>
+
+    <form [formGroup]="form" class="date-pickers">
+        <mat-form-field appearance="fill">
+            <mat-label>From</mat-label>
+            <input matInput [matDatepicker]="pickerFrom" formControlName="fromDate" (dateChange)="onDateChange()" />
+            <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+            <mat-datepicker #pickerFrom></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>To</mat-label>
+            <input matInput [matDatepicker]="pickerTo" formControlName="toDate" (dateChange)="onDateChange()" />
+            <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+            <mat-datepicker #pickerTo></mat-datepicker>
+        </mat-form-field>
+    </form>
+
+    <canvas #chartCanvas></canvas>
+</mat-card>

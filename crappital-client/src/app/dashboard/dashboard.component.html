@@ -1,1 +1,5 @@
-<p>dashboard works!</p>
+<div class="widgets-grid">
+    @for (w of widgets; track w.account?.number) {
+        <app-spending-widget [userId]="userId" [account]="w.account"></app-spending-widget>
+    }
+</div>

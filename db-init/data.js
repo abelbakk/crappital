@@ -1473,7 +1473,7 @@ db.transactions.insertMany([
   {
     fromAccount: accounts_Frieda2._id,
     toAccount: accounts_Bernd1._id,
-    amount: 68.2,
+    amount: 14865,
     currencyFrom: currencies_HUF._id,
     currencyTo: currencies_EUR._id,
     exchangeRate: 0.002464875523786049,
@@ -1544,7 +1544,7 @@ db.transactions.insertMany([
     currencyTo: currencies_HUF._id,
     exchangeRate: 366.91688523107536,
     status: "rejected",
-	timestamp: new Date("2025-04-23"),
+
     category: categories_shopping_id,
   },
 ]);

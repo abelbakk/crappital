@@ -1,0 +1,35 @@
+@import '../../../styles.less';
+
+.widget-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    color: @color-raisin-black;
+    margin-top: 5rem;
+
+    mat-card-title {
+        margin-bottom: 1rem;
+    }
+
+    @media screen and (max-width: 767px) {
+        margin-top: 0;
+    }
+}
+
+.date-pickers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+
+    mat-form-field {
+        width: 10rem;
+    }
+}
+
+canvas {
+    max-width: 100%;
+}
