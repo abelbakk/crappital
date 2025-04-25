@@ -1,0 +1,23 @@
+@if (isLoggedIn) {
+    <div class="exchange-rates-container">
+        <form [formGroup]="form">
+            <mat-form-field>
+                <mat-label>Select Currency</mat-label>
+                <mat-select formControlName="selectedCurrency">
+                    @for (currency of currencyInfos; track currency.code) {
+                        <mat-option [value]="currency">
+                            {{ currency.name }}
+                        </mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </form>
+
+        <div class="rates-list">
+            @for (rate of paginatedExchangeRates; track rate[0]) {
+                <div class="rate-item">{{ rate[0] }}: {{ rate[1] }}</div>
+            }
+            <mat-paginator [length]="filteredExchangeRates.length" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="onPageChange($event)"> </mat-paginator>
+        </div>
+    </div>
+}

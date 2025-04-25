@@ -197,6 +197,16 @@ const options = {
                         _id: { type: 'string', example: '60d0fe4f5311236168a109cb' },
                         code: { type: 'string' },
                         name: { type: 'string' },
+                        exchangeRates: {
+                            type: 'object',
+                            additionalProperties: {
+                                type: 'number',
+                            },
+                            example: {
+                                USD: 1.0,
+                                EUR: 0.85,
+                            },
+                        },
                     },
                     required: ['id', 'code', 'name'],
                 },

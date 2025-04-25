@@ -3,7 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { ErrorNotificationService } from '../services/error-notification.service';
 import { catchError } from 'rxjs/operators';
 
-const SILENCED_ENDPOINTS = ['/core/auth/status'];
+const SILENCED_ENDPOINTS = ['/core/auth/status', '/core/currencies'];
 
 export const httpErrorInterceptor: HttpInterceptorFn = (req, next) => {
     const errorService = inject(ErrorNotificationService);

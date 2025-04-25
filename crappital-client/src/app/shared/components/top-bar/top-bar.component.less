@@ -4,12 +4,8 @@ mat-toolbar {
     background-color: @color-raisin-black;
     border-bottom: 1px solid @color-dark-green;
 
-    @media screen and (min-width: 768px) {
+    @media screen and (min-width: 767px) {
         padding: 0 20%;
-    }
-
-    @media screen and (max-width: 767px) {
-        padding: 0 1rem;
     }
 }
 
@@ -43,6 +39,10 @@ mat-toolbar {
     .user-name {
         color: @color-antique-white;
         font-family: 'PT Sans', sans-serif;
+    }
+
+    @media screen and (max-width: 767px) {
+        font-size: 1rem;
     }
 }
 

@@ -14,7 +14,7 @@ db.users.insertMany([
     lastName: "Weiss",
     email: "berndw@crappital.com",
     password: "$2b$10$/WvHjCHwOJesaKGDpOUWRuXA3QTF82mGwOU4wB14Dkv35.fj1ZtaS",
-    phone: "49 036845 40 00",
+    phone: "490368454000",
     address: {
       postalCode: "98559",
       country: "Germany",
@@ -33,7 +33,7 @@ db.users.insertMany([
     lastName: "van den Nouweland",
     email: "jorbenvdn@crappital.com",
     password: "$2b$10$/WvHjCHwOJesaKGDpOUWRuXA3QTF82mGwOU4wB14Dkv35.fj1ZtaS",
-    phone: "31 06-13788137",
+    phone: "310613788137",
     address: {
       postalCode: "1601",
       country: "Netherlands",
@@ -52,7 +52,7 @@ db.users.insertMany([
     lastName: "Schmidt",
     email: "friedas@crappital.com",
     password: "$2b$10$/WvHjCHwOJesaKGDpOUWRuXA3QTF82mGwOU4wB14Dkv35.fj1ZtaS",
-    phone: "49 030-1234567",
+    phone: "490301234567",
     address: {
       postalCode: "10115",
       country: "Germany",
@@ -71,7 +71,7 @@ db.users.insertMany([
     lastName: "O'Connor",
     email: "liamo@crappital.com",
     password: "$2b$10$/WvHjCHwOJesaKGDpOUWRuXA3QTF82mGwOU4wB14Dkv35.fj1ZtaS",
-    phone: "353 01-2345678",
+    phone: "353012345678",
     address: {
       postalCode: "D02",
       country: "Ireland",
@@ -90,7 +90,7 @@ db.users.insertMany([
     lastName: "Martinez",
     email: "sophiam@crappital.com",
     password: "$2b$10$/WvHjCHwOJesaKGDpOUWRuXA3QTF82mGwOU4wB14Dkv35.fj1ZtaS",
-    phone: "34 91-1234567",
+    phone: "34911234567",
     address: {
       postalCode: "28013",
       country: "Spain",

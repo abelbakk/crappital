@@ -32,8 +32,7 @@ export const currencyRoutes = (router: Router): Router => {
         Currency.find()
             .lean()
             .then((currencies) => {
-                const currencyInfo = currencies.map(({ exchangeRates, ...currencyInfo }) => currencyInfo);
-                res.status(200).json(currencyInfo);
+                res.status(200).json(currencies);
             })
             .catch((error) => {
                 logger.error(error);

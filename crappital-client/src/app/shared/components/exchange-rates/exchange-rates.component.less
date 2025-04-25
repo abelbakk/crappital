@@ -1,0 +1,38 @@
+@import '../../../../styles.less';
+
+.exchange-rates-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    max-width: 100%;
+    color: @color-antique-white;
+
+    mat-form-field {
+        width: 100%;
+        max-width: 20rem;
+    }
+
+    .rates-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rate-item {
+        padding: 0.5rem;
+    }
+
+    ::ng-deep .mat-mdc-paginator {
+        background-color: @color-raisin-black;
+        color: @color-antique-white;
+    }
+}
+
+@media (max-width: 767px) {
+    .exchange-rates-container {
+        padding: 0.5rem;
+
+        .rate-item {
+            font-size: 0.9rem;
+        }
+    }
+}

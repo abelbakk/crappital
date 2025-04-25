@@ -1,0 +1,48 @@
+@import '../../styles.less';
+
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+    min-height: 100%;
+
+    @media screen and (max-width: 767px) {
+        padding: 0.5rem;
+    }
+
+    mat-card {
+        width: 100%;
+        max-width: 40rem;
+
+        mat-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .form-row {
+                display: flex;
+                gap: 1rem;
+
+                @media screen and (max-width: 767px) {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+            }
+
+            mat-form-field {
+                width: 100%;
+            }
+        }
+
+        mat-card-actions {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+
+            button {
+                min-width: 120px;
+            }
+        }
+    }
+}
