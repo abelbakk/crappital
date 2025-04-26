@@ -17,7 +17,7 @@
             @for (rate of paginatedExchangeRates; track rate[0]) {
                 <div class="rate-item">{{ rate[0] }}: {{ rate[1] }}</div>
             }
-            <mat-paginator [length]="filteredExchangeRates.length" [pageSize]="pageSize" [pageIndex]="currentPage" (page)="onPageChange($event)"> </mat-paginator>
+            <mat-paginator [length]="filteredExchangeRates.length" [pageSize]="10" [pageIndex]="currentPage" (page)="onPageChange($event)"> </mat-paginator>
         </div>
     </div>
 }

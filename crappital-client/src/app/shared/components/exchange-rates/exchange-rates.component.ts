@@ -21,9 +21,6 @@ export class ExchangeRatesComponent implements OnInit {
     currentCurrency: CurrencyInfo | null = null;
     exchangeRates: { [key: string]: number } = {};
     form: FormGroup;
-
-    mobilePageSize = 3;
-    desktopPageSize = 12;
     currentPage = 0;
 
     paginatedExchangeRates: [string, number][] = [];
@@ -44,8 +41,12 @@ export class ExchangeRatesComponent implements OnInit {
 
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
             this.checkAuthStatus();
+            this.fetchCurrencies();
         });
+        this.fetchCurrencies();
+    }
 
+    fetchCurrencies(): void {
         this.currenciesService.coreCurrenciesGet().subscribe((currencies) => {
             this.currencyInfos = currencies;
             this.form.get('selectedCurrency')?.setValue(currencies[0]);
@@ -91,16 +92,8 @@ export class ExchangeRatesComponent implements OnInit {
     }
 
     updateDisplayedRates() {
-        const start = this.currentPage * this.pageSize;
-        const end = start + this.pageSize;
+        const start = this.currentPage * 10;
+        const end = start + 10;
         this.paginatedExchangeRates = this.formatExchangeRates(this.filteredExchangeRates.slice(start, end));
-    }
-
-    get isMobile(): boolean {
-        return window.innerWidth <= 767;
-    }
-
-    get pageSize(): number {
-        return this.isMobile ? this.mobilePageSize : this.desktopPageSize;
     }
 }

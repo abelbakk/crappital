@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
         if (control?.hasError('duplicateEmail')) {
             return 'This email is already registered';
         }
-        if (this.loginForm.hasError('passwordMismatch') && (controlName === 'newPassword' || controlName === 'confirmPassword')) {
+        if (form.hasError('passwordMismatch') && (controlName === 'password' || controlName === 'confirmPassword')) {
             return 'Passwords do not match';
         }
         return '';

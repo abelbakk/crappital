@@ -7,11 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-profile',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule],
+    imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatCardModule, MatSnackBarModule],
     templateUrl: './profile.component.html',
     styleUrl: './profile.component.less',
 })
@@ -24,6 +25,7 @@ export class ProfileComponent implements OnInit {
         private usersService: UsersService,
         private fb: FormBuilder,
         private router: Router,
+        private snackBar: MatSnackBar,
     ) {
         this.profileForm = this.fb.group(
             {
@@ -38,7 +40,7 @@ export class ProfileComponent implements OnInit {
                 street: [''],
                 number: [''],
                 additionalDetails: [''],
-                newPassword: ['', [Validators.minLength(8)]],
+                password: ['', [Validators.minLength(8)]],
                 confirmPassword: [''],
             },
             { validators: this.passwordMatchValidator },
@@ -91,8 +93,8 @@ export class ProfileComponent implements OnInit {
                 return 'Please enter a valid postal code';
             }
         }
-        if (this.profileForm.hasError('passwordMismatch') && (controlName === 'newPassword' || controlName === 'confirmPassword')) {
-            return 'Passwords do not match';
+        if (this.profileForm.hasError('passwordMismatch') && (controlName === 'password' || controlName === 'confirmPassword')) {
+            return 'Passwords do not meet required criteria';
         }
         return '';
     }
@@ -114,11 +116,12 @@ export class ProfileComponent implements OnInit {
                     number: formValue.number,
                     additionalDetails: formValue.additionalDetails || undefined,
                 },
-                password: formValue.newPassword || undefined,
+                password: formValue.password || undefined,
+                confirmPassword: formValue.confirmPassword || undefined,
             };
 
             this.usersService.coreUsersIdPut(this.currentUser._id, userData).subscribe(() => {
-                this.profileForm.get('newPassword')?.reset();
+                this.profileForm.get('password')?.reset();
                 this.profileForm.get('confirmPassword')?.reset();
                 this.authService.coreAuthStatusGet().subscribe((userInfo) => {
                     if (userInfo._id) {
@@ -139,6 +142,10 @@ export class ProfileComponent implements OnInit {
                             });
                         });
                     }
+                    this.snackBar.open('Profile updated successfully!', 'Close', {
+                        duration: 3000,
+                        verticalPosition: 'top',
+                    });
                 });
             });
         }

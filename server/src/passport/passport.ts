@@ -20,13 +20,13 @@ export const configurePassport = (passport: PassportStatic): PassportStatic => {
                     if (user) {
                         user.comparePassword(password, (error, _) => {
                             if (error) {
-                                done('Incorrect username or password.');
+                                done(null, false, { message: 'Invalid credentials' });
                             } else {
                                 done(null, user);
                             }
                         });
                     } else {
-                        done(null, undefined);
+                        done(null, false, { message: 'User not found' });
                     }
                 })
                 .catch((error) => {

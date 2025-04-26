@@ -62,8 +62,8 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *                 userId:
      *                   type: string
      *                   example: "60d0fe4f5311236168a109ca"
-     *       400:
-     *         description: Invalid credentials or user not found
+     *       404:
+     *         description: User not found
      *         content:
      *           application/json:
      *             schema:
@@ -71,10 +71,23 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *               properties:
      *                 status:
      *                   type: integer
-     *                   example: 400
+     *                   example: 404
      *                 code:
      *                   type: string
      *                   example: "AUTH_ERRORS_USER_NOT_FOUND"
+     *       401:
+     *         description: Invalid credentials
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 401
+     *                 code:
+     *                   type: string
+     *                   example: "AUTH_ERRORS_INVALID_CREDENTIALS"
      *       403:
      *         description: User not approved
      *         content:
@@ -105,15 +118,30 @@ export const authRoutes = (passport: PassportStatic, router: Router): Router => 
      *         $ref: '#/components/responses/ServerError'
      */
     router.post('/session', (req: Request, res: Response, next: NextFunction) => {
-        passport.authenticate('local', (error: string | null, user: IUser) => {
+        passport.authenticate('local', (error: string | null, user: IUser, info: any) => {
             if (error) {
                 logger.error(error);
                 return next({ status: 500 });
             }
             if (!user) {
+                if (info?.message === 'Invalid credentials') {
+                    return next({
+                        status: 401,
+                        code: AUTH_ERRORS.INVALID_CREDENTIALS,
+                        message: info.message,
+                    });
+                }
+                if (info?.message === 'User not found') {
+                    return next({
+                        status: 404,
+                        code: AUTH_ERRORS.USER_NOT_FOUND,
+                        message: info.message,
+                    });
+                }
                 return next({
-                    status: 400,
-                    code: AUTH_ERRORS.USER_NOT_FOUND,
+                    status: 401,
+                    code: AUTH_ERRORS.INVALID_CREDENTIALS,
+                    message: 'Invalid credentials',
                 });
             }
             req.login(user, (err: string | null) => {

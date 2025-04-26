@@ -1,9 +1,8 @@
 <div class="profile-container">
     <mat-card>
         <mat-card-header>
-            <mat-card-title>Profile</mat-card-title>
             @if (currentUser?.approved) {
-                <mat-card-subtitle>Account approved on: {{ currentUser?.approved }}</mat-card-subtitle>
+                <mat-card-subtitle>Account approved on {{ currentUser?.approved | date: 'd MMMM y' }}</mat-card-subtitle>
             }
         </mat-card-header>
 
@@ -85,8 +84,8 @@
                 <div class="form-row">
                     <mat-form-field appearance="outline">
                         <mat-label>New Password</mat-label>
-                        <input matInput formControlName="newPassword" type="password" />
-                        <mat-error>{{ getErrorMessage('newPassword') }}</mat-error>
+                        <input matInput formControlName="password" type="password" />
+                        <mat-error>{{ getErrorMessage('password') }}</mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline">
