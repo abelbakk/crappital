@@ -1,0 +1,37 @@
+<div class="accounts-container">
+    @if (accounts.length > 0) {
+        @for (account of accounts; track account._id) {
+            <div class="account-card">
+                <div class="account-header">
+                    <h3>Account: {{ account.name || 'Unnamed Account' }}</h3>
+                </div>
+
+                <div class="account-info">
+                    <div class="info-item">
+                        <span class="label">Number:</span>
+                        <span class="value">{{ account.number }}</span>
+                        <button mat-icon-button (click)="copyNumber(account.number)" aria-label="Copy Account Number">
+                            <mat-icon>content_copy</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">Balance:</span>
+                        <span class="value">{{ account.balance }} {{ account.currency.code }}</span>
+                    </div>
+
+                    <div class="info-item">
+                        <span class="label">Pending:</span>
+                        <span class="value">{{ account.pending }} {{ account.currency.code }}</span>
+                    </div>
+                </div>
+
+                <div class="account-actions">
+                    <button mat-raised-button color="primary" (click)="goToDetails(account._id!)">Details</button>
+                </div>
+            </div>
+        }
+    } @else {
+        <div class="no-accounts">No accounts found.</div>
+    }
+</div>

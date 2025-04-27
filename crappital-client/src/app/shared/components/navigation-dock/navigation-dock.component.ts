@@ -19,6 +19,7 @@ export class NavigationDockComponent {
 
     navItems = [
         { label: 'Dashboard', icon: 'analytics', route: '/dashboard' },
+        { label: 'Deposit', icon: 'local_atm', route: '/deposit' },
         { label: 'Accounts', icon: 'account_balance', route: '/accounts' },
         { label: 'New Transaction', icon: 'ads_click', route: '/new-transaction' },
         { label: 'Admin Dashboard', icon: 'admin_panel_settings', route: '/admin-dashboard', admin: true },

@@ -7,7 +7,22 @@ import { getExchangeRate, convertCurrency } from './currencyService';
 
 export const getAllTransactions = async (userId: Types.ObjectId) => {
     try {
-        return await Transaction.find().or([{ 'fromAccount.userId': userId }, { 'toAccount.userId': userId }]);
+        const accounts = await Account.find({ userId }).select('_id');
+        const accountIds = accounts.map((acc) => acc._id);
+        return await Transaction.find({
+            $or: [{ fromAccount: { $in: accountIds } }, { toAccount: { $in: accountIds } }],
+        })
+            .populate({
+                path: 'fromAccount',
+                populate: { path: 'currency' },
+            })
+            .populate({
+                path: 'toAccount',
+                populate: { path: 'currency' },
+            })
+            .populate('currencyFrom')
+            .populate('currencyTo')
+            .populate('category');
     } catch (error) {
         logger.error(error);
         throw error;
@@ -16,7 +31,18 @@ export const getAllTransactions = async (userId: Types.ObjectId) => {
 
 export const getTransactionById = async (transactionId: string) => {
     try {
-        return await Transaction.findById(transactionId);
+        return await Transaction.findById(transactionId)
+            .populate({
+                path: 'fromAccount',
+                populate: { path: 'currency' },
+            })
+            .populate({
+                path: 'toAccount',
+                populate: { path: 'currency' },
+            })
+            .populate('currencyFrom')
+            .populate('currencyTo')
+            .populate('category');
     } catch (error) {
         logger.error(error);
         throw error;

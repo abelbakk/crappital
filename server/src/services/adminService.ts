@@ -32,7 +32,18 @@ export const restrictUser = async (userId: string, until: Date) => {
 
 export const getPendingTransactions = async () => {
     try {
-        return await Transaction.find({ status: 'pending' }).populate(['fromAccount', 'toAccount', 'category']);
+        return await Transaction.find({ status: 'pending' })
+            .populate({
+                path: 'fromAccount',
+                populate: { path: 'currency' },
+            })
+            .populate({
+                path: 'toAccount',
+                populate: { path: 'currency' },
+            })
+            .populate('currencyFrom')
+            .populate('currencyTo')
+            .populate('category');
     } catch (error) {
         logger.error(error);
         throw error;

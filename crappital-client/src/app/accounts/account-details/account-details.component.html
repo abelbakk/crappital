@@ -1,0 +1,69 @@
+<button mat-icon-button class="back-btn" (click)="goBack()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+</button>
+<div class="account-details-container">
+    <form [formGroup]="form" class="account-form">
+        <div class="account-card">
+            <div class="account-header">
+                <mat-form-field appearance="outline" class="account-name-field">
+                    <input matInput formControlName="name" placeholder="Account Name" />
+                </mat-form-field>
+
+                <span class="account-actions">
+                    <button mat-icon-button color="primary" (click)="onSave()" aria-label="Save">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="onDelete()" aria-label="Delete">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </span>
+            </div>
+
+            <div class="account-info">
+                <div class="info-item">
+                    <span class="label">Number:</span>
+                    <span class="value">{{ account?.number }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Balance:</span>
+                    <span class="value">{{ account?.balance }} {{ account?.currency?.code }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Pending:</span>
+                    <span class="value">{{ account?.pending }} {{ account?.currency?.code }}</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@if (transactions) {
+    @for (entry of transactions | keyvalue; track entry.key) {
+        <section class="status-box">
+            <h3 class="status-title">{{ entry.key | titlecase }}</h3>
+            @for (transaction of entry.value; track transaction._id) {
+                <div class="transactions-row mat-elevation-z2">
+                    <div class="transactions-info">
+                        <span class="transactions-field">
+                            {{ transaction.amount | number: '1.2-2' }}
+                            {{ transaction.currencyTo.code }}
+                        </span>
+                        <span class="transactions-field"> To: {{ transaction.toAccount.number }} </span>
+                        <span class="transactions-field">
+                            {{ transaction.timestamp | date: 'd MMMM y hh:mm' }}
+                        </span>
+                        <mat-icon class="transactions-field icon">
+                            {{ transaction.category?.icon }}
+                        </mat-icon>
+                        <span class="transactions-field">
+                            {{ transaction.category?.name }}
+                        </span>
+                    </div>
+                    <button mat-stroked-button class="details-btn" (click)="goToDetails(transaction._id!)">Details</button>
+                </div>
+            }
+        </section>
+    }
+}

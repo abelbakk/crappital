@@ -1,0 +1,94 @@
+<button mat-icon-button class="back-btn" (click)="goBack()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+</button>
+<div class="transaction-details-container">
+    <form [formGroup]="form" class="transaction-form">
+        <div class="transaction-card">
+            <div class="transaction-header">
+                Transaction information
+                @if (this.isPending) {
+                    <span class="account-actions">
+                        <button mat-icon-button color="primary" (click)="onSave()" aria-label="Save">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="onDelete()" aria-label="Cancel">
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </span>
+                }
+            </div>
+
+            <div class="transaction-info">
+                <div class="info-item">
+                    <span class="label">From:</span>
+                    <span class="value">{{ transaction?.fromAccount?.number }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">To:</span>
+                    <span class="value">{{ transaction?.toAccount?.number }}</span>
+                </div>
+
+                @if (this.isPending) {
+                    <div class="info-item">
+                        <span class="label">Amount:</span>
+                        <mat-form-field class="value" appearance="outline" class="transaction-amount-field">
+                            <input matInput formControlName="amount" placeholder="500" />
+                        </mat-form-field>
+                    </div>
+                } @else {
+                    <div class="info-item">
+                        <span class="label">Amount:</span>
+                        <span class="value">{{ transaction?.amount | number: '1.2-2' }}</span>
+                    </div>
+                }
+
+                <div class="info-item">
+                    <span class="label">Currency:</span>
+                    <span class="value">{{ transaction?.currencyTo?.name }}</span>
+                </div>
+
+                @if (transaction?.exchangeRate !== 1) {
+                    <div class="info-item">
+                        <span class="label">Rate:</span>
+                        <span class="value">{{ transaction?.exchangeRate }}</span>
+                    </div>
+                }
+
+                <div class="info-item">
+                    <span class="label">At:</span>
+                    <span class="value">{{ transaction?.timestamp | date: 'y MMMM d hh:mm' }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Status:</span>
+                    <span class="value">{{ transaction?.status }}</span>
+                </div>
+
+                @if (this.isPending) {
+                    <div class="info-item">
+                        <span class="label">Category:</span>
+                        <mat-form-field class="value transaction-category-field" appearance="outline">
+                            <mat-select formControlName="category" placeholder="Select category">
+                                @for (cat of categories; track cat._id) {
+                                    <mat-option [value]="cat">
+                                        <span class="category-emoji">{{ cat.icon }}</span>
+                                        {{ cat.name }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                } @else {
+                    <div class="info-item">
+                        <span class="label">Category:</span>
+                        <span class="value">
+                            <span class="category-emoji">{{ transaction?.category?.icon }}</span>
+                            {{ transaction?.category?.name }}
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</div>

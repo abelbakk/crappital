@@ -1,0 +1,157 @@
+@import '../../../styles.less';
+
+.back-btn {
+    color: @color-antique-white;
+    top: 1rem;
+    left: 50%;
+    margin-bottom: 1rem;
+    z-index: 2;
+}
+
+.account-details-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+
+    .account-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .account-card {
+        border: 1px solid @color-antique-white;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        background-color: @color-antique-white;
+        color: @color-raisin-black;
+    }
+
+    .account-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .account-name-field {
+            flex: 1;
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+    }
+
+    .account-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .label {
+                font-weight: 600;
+                min-width: 4rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .account-details-container {
+        padding: 1rem;
+
+        .account-card {
+            padding: 1rem;
+            gap: 1rem;
+        }
+
+        .account-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .account-actions {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.status-box {
+    background: @color-antique-white;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+
+    .status-title {
+        color: @color-raisin-black;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .transactions-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: white;
+        border-radius: 0.75rem;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+        .transactions-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .transactions-field {
+                font-size: 0.95rem;
+                color: @color-dark-green;
+                font-weight: 500;
+
+                &.icon {
+                    font-size: 1.25rem;
+                    color: @color-apple-green;
+                    font-weight: normal;
+                }
+            }
+        }
+
+        .details-btn {
+            border-color: @color-crayola;
+            color: @color-crayola;
+            border-radius: 0.75rem;
+            text-transform: none;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .transactions-row {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 0.5rem;
+
+            .transactions-info {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+
+                .transactions-field {
+                    flex: 1 1 45%;
+                }
+            }
+
+            .details-btn {
+                width: 100%;
+            }
+        }
+    }
+}

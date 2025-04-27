@@ -226,7 +226,9 @@ const options = {
                         userId: { type: 'string' },
                         name: { type: 'string' },
                         number: { type: 'string' },
-                        currency: { type: 'string' },
+                        currency: {
+                            $ref: '#/components/schemas/CurrencyInfo',
+                        },
                         balance: { type: 'number' },
                         pending: { type: 'number' },
                     },
@@ -236,15 +238,28 @@ const options = {
                     type: 'object',
                     properties: {
                         _id: { type: 'string', example: '60d0fe4f5311236168a109ce' },
-                        fromAccount: { type: 'string' },
-                        toAccount: { type: 'string' },
+                        fromAccount: {
+                            $ref: '#/components/schemas/Account',
+                        },
+                        toAccount: {
+                            $ref: '#/components/schemas/Account',
+                        },
                         amount: { type: 'number' },
-                        currencyFrom: { type: 'string', description: 'Reference to source currency' },
-                        currencyTo: { type: 'string', description: 'Reference to destination currency' },
+                        currencyFrom: {
+                            $ref: '#/components/schemas/CurrencyInfo',
+                            description: 'Source currency details',
+                        },
+                        currencyTo: {
+                            $ref: '#/components/schemas/CurrencyInfo',
+                            description: 'Destination currency details',
+                        },
                         exchangeRate: { type: 'number', readOnly: true },
                         timestamp: { type: 'string', format: 'date-time' },
                         status: { type: 'string', enum: ['pending', 'completed', 'rejected'] },
-                        category: { type: 'string', description: 'Reference to transaction category' },
+                        category: {
+                            $ref: '#/components/schemas/Category',
+                            description: 'Transaction category details',
+                        },
                     },
                     required: ['fromAccount', 'toAccount', 'amount', 'currencyFrom', 'currencyTo'],
                 },

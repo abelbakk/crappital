@@ -15,3 +15,23 @@ export const authGuard: CanActivateFn = (route, state) => {
             }),
         );
 };
+
+export const authGuardAdmin: CanActivateFn = (route, state) => {
+    const r = inject(Router);
+    return inject(AuthService)
+        .coreAuthStatusGet()
+        .pipe(
+            map((userInfo) => {
+                if (userInfo?.admin) {
+                    return true;
+                } else {
+                    r.navigateByUrl('/home');
+                    return false;
+                }
+            }),
+            catchError(() => {
+                r.navigateByUrl('/home');
+                return of(false);
+            }),
+        );
+};

@@ -26,7 +26,9 @@ export class ProfileComponent implements OnInit {
         private fb: FormBuilder,
         private router: Router,
         private snackBar: MatSnackBar,
-    ) {
+    ) {}
+
+    ngOnInit(): void {
         this.profileForm = this.fb.group(
             {
                 email: ['', [Validators.email]],
@@ -45,9 +47,6 @@ export class ProfileComponent implements OnInit {
             },
             { validators: this.passwordMatchValidator },
         );
-    }
-
-    ngOnInit(): void {
         this.authService.coreAuthStatusGet().subscribe((userInfo) => {
             if (userInfo._id) {
                 this.usersService.coreUsersIdGet(userInfo._id).subscribe((user) => {
