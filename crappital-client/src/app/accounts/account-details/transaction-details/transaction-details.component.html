@@ -45,6 +45,11 @@
 
                 <div class="info-item">
                     <span class="label">Currency:</span>
+                    <span class="value">{{ transaction?.currencyFrom?.name }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Target:</span>
                     <span class="value">{{ transaction?.currencyTo?.name }}</span>
                 </div>
 
@@ -69,7 +74,7 @@
                     <div class="info-item">
                         <span class="label">Category:</span>
                         <mat-form-field class="value transaction-category-field" appearance="outline">
-                            <mat-select formControlName="category" placeholder="Select category">
+                            <mat-select formControlName="category" placeholder="Select category" [compareWith]="compareCategory">
                                 @for (cat of categories; track cat._id) {
                                     <mat-option [value]="cat">
                                         <span class="category-emoji">{{ cat.icon }}</span>

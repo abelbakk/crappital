@@ -63,31 +63,35 @@ export const createTransaction = async (transactionData: { fromAccountId: string
             throw new Error('One or both currencies not found');
         }
 
-        let sourceAmount = transactionData.amount;
+        let deductedAmount = transactionData.amount;
         if (transactionData.currencyFrom.toLowerCase() !== sourceCurrency.code.toLowerCase()) {
-            sourceAmount = await convertCurrency(transactionData.currencyFrom, sourceCurrency.code, transactionData.amount.toString());
+            deductedAmount = await convertCurrency(transactionData.currencyFrom, sourceCurrency.code, transactionData.amount.toString());
         }
 
-        if (fromAccount.balance < sourceAmount) {
+        if (fromAccount.balance < deductedAmount) {
             throw new Error('Insufficient funds');
         }
 
-        const exchangeRate = await getExchangeRate(sourceCurrency._id as string, targetCurrency._id as string);
+        const currencyFromDoc = await Currency.findOne({ code: transactionData.currencyFrom.toUpperCase() });
+        if (!currencyFromDoc) {
+            throw new Error('currencyFrom not found');
+        }
+        const exchangeRate = await getExchangeRate(currencyFromDoc._id as string, targetCurrency._id as string);
 
         const transaction = new Transaction({
             fromAccount: fromAccount._id,
             toAccount: toAccount._id,
-            amount: sourceAmount,
-            currencyFrom: sourceCurrency._id,
+            amount: transactionData.amount,
+            currencyFrom: currencyFromDoc._id,
             currencyTo: targetCurrency._id,
-            exchangeRate,
+            exchangeRate: exchangeRate,
             category: transactionData.categoryId,
             timestamp: new Date(),
             status: 'pending',
         });
 
-        fromAccount.balance -= sourceAmount;
-        fromAccount.pending += sourceAmount;
+        fromAccount.balance -= deductedAmount;
+        fromAccount.pending += deductedAmount;
 
         await Promise.all([fromAccount.save(), transaction.save()]);
         return transaction;
@@ -103,30 +107,42 @@ export const updateTransactionById = async (transactionId: string, updateData: {
         if (!transaction) {
             throw new Error('Transaction not found');
         }
-
         if (transaction.status !== 'pending') {
             throw new Error('Cannot update processed transaction');
         }
 
+        const fromAccount = await Account.findById(transaction.fromAccount);
+        if (!fromAccount) {
+            throw new Error('From account not found');
+        }
+        const sourceCurrency = await Currency.findById(fromAccount.currency);
+        const currencyFrom = await Currency.findById(transaction.currencyFrom);
+        if (!sourceCurrency || !currencyFrom) {
+            throw new Error('One or both currencies not found');
+        }
+
         if (updateData.amount) {
-            const fromAccount = await Account.findById(transaction.fromAccount);
-
-            if (!fromAccount) {
-                throw new Error('From account not found');
+            let oldDeductedAmount = transaction.amount;
+            if (currencyFrom.code !== sourceCurrency.code) {
+                oldDeductedAmount = await convertCurrency(currencyFrom.code, sourceCurrency.code, transaction.amount.toString());
             }
+            fromAccount.pending -= oldDeductedAmount;
+            fromAccount.balance += oldDeductedAmount;
 
-            fromAccount.pending -= transaction.amount;
-            fromAccount.balance += transaction.amount;
-
-            if (fromAccount.balance < updateData.amount) {
+            const newAmount = updateData.amount;
+            let newDeductedAmount = newAmount;
+            if (currencyFrom.code !== sourceCurrency.code) {
+                newDeductedAmount = await convertCurrency(currencyFrom.code, sourceCurrency.code, newAmount.toString());
+            }
+            if (fromAccount.balance < newDeductedAmount) {
+                fromAccount.pending += oldDeductedAmount;
+                fromAccount.balance -= oldDeductedAmount;
                 throw new Error('Insufficient funds');
             }
+            fromAccount.balance -= newDeductedAmount;
+            fromAccount.pending += newDeductedAmount;
 
-            fromAccount.pending += updateData.amount;
-            fromAccount.balance -= updateData.amount;
-
-            transaction.amount = updateData.amount;
-
+            transaction.amount = newAmount;
             await fromAccount.save();
         }
 
@@ -147,19 +163,27 @@ export const deleteTransactionById = async (transactionId: string) => {
         if (!transaction) {
             throw new Error('Transaction not found');
         }
-
         if (transaction.status !== 'pending') {
             throw new Error('Cannot delete processed transaction');
         }
 
         const fromAccount = await Account.findById(transaction.fromAccount);
-
         if (!fromAccount) {
             throw new Error('From account not found');
         }
+        const sourceCurrency = await Currency.findById(fromAccount.currency);
+        const currencyFrom = await Currency.findById(transaction.currencyFrom);
 
-        fromAccount.pending -= transaction.amount;
-        fromAccount.balance += transaction.amount;
+        if (!sourceCurrency || !currencyFrom) {
+            throw new Error('One or both currencies not found');
+        }
+
+        let deductedAmount = transaction.amount;
+        if (currencyFrom.code !== sourceCurrency.code) {
+            deductedAmount = await convertCurrency(currencyFrom.code, sourceCurrency.code, transaction.amount.toString());
+        }
+        fromAccount.pending -= deductedAmount;
+        fromAccount.balance += deductedAmount;
 
         await Promise.all([fromAccount.save(), Transaction.findByIdAndDelete(transactionId)]);
     } catch (error) {

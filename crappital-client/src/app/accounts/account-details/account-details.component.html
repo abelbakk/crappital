@@ -39,30 +39,64 @@
     </form>
 </div>
 
+<span class="transaction-direction">Outgoing transactions</span>
 @if (transactions) {
     @for (entry of transactions | keyvalue; track entry.key) {
         <section class="status-box">
             <h3 class="status-title">{{ entry.key | titlecase }}</h3>
             @for (transaction of entry.value; track transaction._id) {
-                <div class="transactions-row mat-elevation-z2">
-                    <div class="transactions-info">
-                        <span class="transactions-field">
-                            {{ transaction.amount | number: '1.2-2' }}
-                            {{ transaction.currencyTo.code }}
-                        </span>
-                        <span class="transactions-field"> To: {{ transaction.toAccount.number }} </span>
-                        <span class="transactions-field">
-                            {{ transaction.timestamp | date: 'd MMMM y hh:mm' }}
-                        </span>
-                        <mat-icon class="transactions-field icon">
-                            {{ transaction.category?.icon }}
-                        </mat-icon>
-                        <span class="transactions-field">
-                            {{ transaction.category?.name }}
-                        </span>
+                @if (isOwn(transaction)) {
+                    <div class="transactions-row mat-elevation-z2">
+                        <div class="transactions-info">
+                            <span class="transactions-field">
+                                {{ transaction.amount | number: '1.2-2' }}
+                                {{ transaction.currencyFrom.code }}
+                            </span>
+                            <span class="transactions-field"> To: {{ transaction.toAccount.number }} </span>
+                            <span class="transactions-field">
+                                {{ transaction.timestamp | date: 'd MMMM y hh:mm' }}
+                            </span>
+                            <mat-icon class="transactions-field icon">
+                                {{ transaction.category?.icon }}
+                            </mat-icon>
+                            <span class="transactions-field">
+                                {{ transaction.category?.name }}
+                            </span>
+                        </div>
+                        <button mat-stroked-button class="details-btn" (click)="goToDetails(transaction._id!)">Details</button>
                     </div>
-                    <button mat-stroked-button class="details-btn" (click)="goToDetails(transaction._id!)">Details</button>
-                </div>
+                }
+            }
+        </section>
+    }
+}
+
+<span class="transaction-direction">Incoming transactions</span>
+@if (transactions) {
+    @for (entry of transactions | keyvalue; track entry.key) {
+        <section class="status-box">
+            <h3 class="status-title">{{ entry.key | titlecase }}</h3>
+            @for (transaction of entry.value; track transaction._id) {
+                @if (!isOwn(transaction)) {
+                    <div class="transactions-row mat-elevation-z2">
+                        <div class="transactions-info">
+                            <span class="transactions-field">
+                                {{ transaction.amount | number: '1.2-2' }}
+                                {{ transaction.currencyTo.code }}
+                            </span>
+                            <span class="transactions-field"> From: {{ transaction.fromAccount.number }} </span>
+                            <span class="transactions-field">
+                                {{ transaction.timestamp | date: 'd MMMM y hh:mm' }}
+                            </span>
+                            <mat-icon class="transactions-field icon">
+                                {{ transaction.category?.icon }}
+                            </mat-icon>
+                            <span class="transactions-field">
+                                {{ transaction.category?.name }}
+                            </span>
+                        </div>
+                    </div>
+                }
             }
         </section>
     }

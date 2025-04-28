@@ -54,9 +54,8 @@ export class TransactionDetailsComponent implements OnInit {
     onSave() {
         if (this.transaction && this.isPending) {
             const updatedTransaction = {
-                ...this.transaction,
-                amount: this.form.value.amount || this.transaction.amount,
-                category: this.form.value.category?._id || this.transaction.category?._id,
+                amount: this.form.value.amount,
+                categoryId: this.form.value.category?._id,
             };
 
             this.transactionsService.coreTransactionsUserIdTransactionIdPut(this.userId, this.transactionId, updatedTransaction).subscribe({
@@ -85,6 +84,10 @@ export class TransactionDetailsComponent implements OnInit {
         this.location.back();
     }
 
+    compareCategory(c1: Category, c2: Category): boolean {
+        return c1 && c2 ? c1._id === c2._id : c1 === c2;
+    }
+
     private loadTransactionAndCategories() {
         forkJoin({
             transaction: this.transactionsService.coreTransactionsUserIdTransactionIdGet(this.userId, this.transactionId),
@@ -97,7 +100,7 @@ export class TransactionDetailsComponent implements OnInit {
                     const category = categories.find((c) => c._id === transaction.category?._id);
                     this.form.patchValue({
                         amount: transaction.amount,
-                        category: category || ({} as Category),
+                        category: category,
                     });
                 }
             },

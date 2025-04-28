@@ -34,6 +34,10 @@ export class AccountDetailsComponent implements OnInit {
         private router: Router,
     ) {}
 
+    isOwn(transaction: Transaction): boolean {
+        return transaction.fromAccount._id === this.accountId;
+    }
+
     ngOnInit() {
         this.userId = this.route.snapshot.paramMap.get('userId')!;
         this.accountId = this.route.snapshot.paramMap.get('accountId')!;
