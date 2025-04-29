@@ -1,0 +1,11 @@
+<mat-form-field appearance="outline" class="currency-picker-field">
+    <mat-select [value]="selectedCurrency" (selectionChange)="onSelectionChange($event.value)" [compareWith]="compareCurrency">
+        @for (currency of currencies; track currency._id) {
+            <mat-option [value]="currency">
+                <span class="flag">{{ getFlag(currency.code) }}</span>
+                <span class="code">&nbsp;{{ currency.code }}&nbsp;</span>
+                <span class="name">{{ currency.name }}</span>
+            </mat-option>
+        }
+    </mat-select>
+</mat-form-field>
