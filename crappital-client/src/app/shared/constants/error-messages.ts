@@ -12,6 +12,8 @@ export const ERROR_MESSAGES: Record<string, string> = {
 
     GENERAL_ERRORS_MISSING_REQUEST_PARAMETERS: 'Missing required information.',
     GENERAL_ERRORS_NOT_FOUND: 'Resource not found.',
+
+    ACCOUNT_ERRORS_ACCOUNT_NOT_FOUND: 'Account not found.',
 };
 
 export const GENERIC_ERROR_MESSAGE = 'An unexpected error occurred. Please try again.';

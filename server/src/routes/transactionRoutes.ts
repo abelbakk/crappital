@@ -1,9 +1,10 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
-import { GENERAL_ERRORS } from '../utils/errorHandler';
+import { ACCOUNT_ERRORS, GENERAL_ERRORS } from '../utils/errorHandler';
 import { getAllTransactions, getTransactionById, createTransaction, updateTransactionById, deleteTransactionById } from '../services/transactionService';
 import { isAuthenticated, isSelfOrAdmin } from '../middleware/authMiddleware';
 import { getUserId } from '../services/accountService';
+import { Account } from '../model/Account';
 
 export const transactionRoutes = (router: Router): Router => {
     /**
@@ -114,14 +115,14 @@ export const transactionRoutes = (router: Router): Router => {
      *             type: object
      *             required:
      *               - fromAccountId
-     *               - toAccountId
+     *               - toAccountNumber
      *               - amount
      *               - currencyFrom
      *               - categoryId
      *             properties:
      *               fromAccountId:
      *                 type: string
-     *               toAccountId:
+     *               toAccountNumber:
      *                 type: string
      *               amount:
      *                 type: number
@@ -136,12 +137,33 @@ export const transactionRoutes = (router: Router): Router => {
      *         $ref: '#/components/responses/BadRequest'
      *       401:
      *         $ref: '#/components/responses/Unauthorized'
+     *       404:
+     *         description: Target account not found
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 status:
+     *                   type: integer
+     *                   example: 404
+     *                 code:
+     *                   type: string
+     *                   example: "ACCOUNT_ERRORS_ACCOUNT_NOT_FOUND"
      *       500:
      *         $ref: '#/components/responses/ServerError'
      */
     router.post('/', isAuthenticated, async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const transaction = await createTransaction(req.body);
+            const targetAccount = await Account.findOne({ number: req.body.toAccountNumber });
+            if (!targetAccount) {
+                return next({ status: 404, code: ACCOUNT_ERRORS.ACCOUNT_NOT_FOUND });
+            }
+            const request = {
+                ...req.body,
+                toAccountId: targetAccount._id,
+            };
+            const transaction = await createTransaction(request);
             res.status(201).json(transaction);
         } catch (error) {
             logger.error(error);

@@ -25,6 +25,10 @@ export const GENERAL_ERRORS = {
     NOT_FOUND: 'GENERAL_ERRORS_NOT_FOUND',
 };
 
+export const ACCOUNT_ERRORS = {
+    ACCOUNT_NOT_FOUND: 'ACCOUNT_ERRORS_ACCOUNT_NOT_FOUND',
+};
+
 export function errorHandler(err: ApiError, req: Request, res: Response, _next: NextFunction) {
     const status = err.status || 500;
     const errorCode = err.code || 'UNKNOWN_ERROR';

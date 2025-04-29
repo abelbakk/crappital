@@ -82,7 +82,7 @@
                         <div class="transactions-info">
                             <span class="transactions-field">
                                 {{ transaction.amount | number: '1.2-2' }}
-                                {{ transaction.currencyTo.code }}
+                                {{ transaction.currencyFrom.code }}
                             </span>
                             <span class="transactions-field"> From: {{ transaction.fromAccount.number }} </span>
                             <span class="transactions-field">

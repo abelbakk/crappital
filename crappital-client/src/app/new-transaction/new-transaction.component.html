@@ -1,1 +1,103 @@
-<p>new-transaction works!</p>
+<div class="deposit-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>New Transaction</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (accounts.length === 0) {
+                <div class="no-accounts-message">
+                    <p>You don't have any accounts. Please open an account first.</p>
+                </div>
+            } @else {
+                <form [formGroup]="newTransactionForm" (ngSubmit)="onSubmit()">
+                    <div class="form-section">
+                        <h3>Select Account</h3>
+                        <mat-form-field appearance="outline" class="full-width">
+                            <mat-label>Account</mat-label>
+                            <mat-select formControlName="account" (selectionChange)="onAccountSelect($event.value)">
+                                @for (account of accounts; track account._id) {
+                                    <mat-option [value]="account"> {{ account.name || 'Account' }} ({{ account.number }}) </mat-option>
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    @if (selectedAccount) {
+                        <div class="form-section account-details">
+                            <h3>Account Details</h3>
+                            <div class="detail-row">
+                                <span class="detail-label">Name:</span>
+                                <span class="detail-value">{{ selectedAccount.name || 'Unnamed Account' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Number:</span>
+                                <span class="detail-value">{{ selectedAccount.number }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Currency:</span>
+                                <span class="detail-value">{{ selectedAccount.currency.name }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Balance:</span>
+                                <span class="detail-value">{{ selectedAccount.balance | number: '1.2-2' }} {{ selectedAccount.currency.code }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Pending:</span>
+                                <span class="detail-value">{{ selectedAccount.pending | number: '1.2-2' }} {{ selectedAccount.currency.code }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Transaction Details</h3>
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Target account number</mat-label>
+                                <input matInput formControlName="toAccountNumber" required />
+                                @if (newTransactionForm.get('toAccountNumber')?.hasError('required')) {
+                                    <mat-error> Target account is required </mat-error>
+                                }
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Amount</mat-label>
+                                <input matInput type="number" formControlName="amount" min="0.01" step="0.01" />
+                                @if (newTransactionForm.get('amount')?.hasError('required')) {
+                                    <mat-error> Amount is required </mat-error>
+                                } @else if (newTransactionForm.get('amount')?.hasError('min')) {
+                                    <mat-error> Amount must be greater than 0 </mat-error>
+                                }
+                            </mat-form-field>
+
+                            <mat-form-field appearance="outline" class="full-width">
+                                <mat-label>Category</mat-label>
+                                <mat-select formControlName="category">
+                                    @for (category of categories; track category._id) {
+                                        <mat-option [value]="category"> {{ category.icon }} {{ category.name }} </mat-option>
+                                    }
+                                </mat-select>
+                                @if (newTransactionForm.get('category')?.hasError('required')) {
+                                    <mat-error> Category is required </mat-error>
+                                }
+                            </mat-form-field>
+
+                            <div class="currency-picker-container">
+                                <h4>Select Currency</h4>
+                                <app-currency-picker formControlName="currency"></app-currency-picker>
+                            </div>
+                        </div>
+
+                        @if (isCurrencyDifferent() && convertedAmount !== null && newTransactionForm.get('amount')?.value) {
+                            <div class="conversion-info">
+                                <p>{{ convertedAmount | number: '1.2-2' }} in the currency of the account</p>
+                            </div>
+                        }
+
+                        <div class="button-container">
+                            <button mat-raised-button color="primary" type="submit" [disabled]="newTransactionForm.invalid">Send</button>
+                        </div>
+                    }
+                </form>
+            }
+        </mat-card-content>
+    </mat-card>
+</div>

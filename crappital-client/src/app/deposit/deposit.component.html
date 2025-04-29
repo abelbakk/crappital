@@ -40,11 +40,11 @@
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Balance:</span>
-                                <span class="detail-value">{{ selectedAccount.balance }} {{ selectedAccount.currency.code }}</span>
+                                <span class="detail-value">{{ selectedAccount.balance | number: '1.2-2' }} {{ selectedAccount.currency.code }}</span>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Pending:</span>
-                                <span class="detail-value">{{ selectedAccount.pending }} {{ selectedAccount.currency.code }}</span>
+                                <span class="detail-value">{{ selectedAccount.pending | number: '1.2-2' }} {{ selectedAccount.currency.code }}</span>
                             </div>
                         </div>
 
@@ -68,7 +68,7 @@
 
                         @if (isCurrencyDifferent() && convertedAmount !== null && depositForm.get('amount')?.value) {
                             <div class="conversion-info">
-                                <p>({{ convertedAmount | number: '1.2-2' }} in the currency of the account)</p>
+                                <p>{{ convertedAmount | number: '1.2-2' }} in the currency of the account</p>
                             </div>
                         }
 
