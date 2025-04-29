@@ -1,0 +1,61 @@
+@import '../../styles.less';
+
+.new-account-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+
+    mat-card {
+        width: 100%;
+        max-width: 35rem;
+        color: @color-raisin-black;
+        background-color: @color-antique-white;
+    }
+
+    mat-card-header {
+        margin-bottom: 1rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+
+        h3,
+        h4 {
+            margin-bottom: 1rem;
+            color: @color-dark-green;
+            font-weight: 500;
+        }
+        h4 {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .currency-picker-container {
+        margin-top: 1.5rem;
+
+        mat-error {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+
+        button {
+            min-width: 9rem;
+            font-size: 1.1rem;
+            padding: 0.5rem 2rem;
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        padding: 1rem;
+    }
+}

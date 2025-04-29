@@ -1,0 +1,34 @@
+<div class="new-account-container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Create New Account</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form [formGroup]="newAccountForm" (ngSubmit)="onSubmit()">
+                <div class="form-section">
+                    <h3>Account Details</h3>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Account Name (Optional)</mat-label>
+                        <input matInput formControlName="name" placeholder="e.g., Savings Account" />
+                        @if (newAccountForm.get('name')?.hasError('required') && newAccountForm.get('name')?.touched) {
+                            <mat-error> Name is required </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <div class="currency-picker-container">
+                        <h4>Select Currency *</h4>
+                        <app-currency-picker formControlName="currency"></app-currency-picker>
+                        @if (newAccountForm.get('currency')?.hasError('required') && newAccountForm.get('currency')?.touched) {
+                            <mat-error> Currency is required </mat-error>
+                        }
+                    </div>
+                </div>
+
+                <div class="button-container">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="newAccountForm.invalid">Create Account</button>
+                </div>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
