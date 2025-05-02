@@ -2,18 +2,15 @@ name: crappital
 
 services:
   mongodb:
-    image: mongo:8.0.5
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     container_name: crappital-mongo
     restart: unless-stopped
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: crappital
-      MONGO_INITDB_DATABASE: crappital
     volumes:
       - mongodb_data:/data/db
-      - ./db-init/:/docker-entrypoint-initdb.d
 
   server:
     build:
@@ -28,6 +25,16 @@ services:
     depends_on:
       - mongodb
 
+  client:
+    build:
+      context: ./crappital-client
+      dockerfile: Dockerfile
+    container_name: crappital-client
+    restart: unless-stopped
+    ports:
+      - "9021:80"
+    depends_on:
+      - server
+
 volumes:
   mongodb_data:
-

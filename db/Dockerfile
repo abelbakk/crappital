@@ -1,0 +1,7 @@
+FROM mongo:8.0.5
+
+ENV MONGO_INITDB_ROOT_USERNAME=root
+ENV MONGO_INITDB_ROOT_PASSWORD=crappital
+ENV MONGO_INITDB_DATABASE=crappital
+
+COPY . /docker-entrypoint-initdb.d
