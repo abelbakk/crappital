@@ -72,4 +72,52 @@
             </div>
         </div>
     }
+
+    <div class="category-management">
+        <h3>Category Management</h3>
+        <form class="category-form" [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+            <mat-form-field appearance="fill">
+                <mat-label>Category name</mat-label>
+                <input matInput formControlName="name" maxlength="32" required />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Icon</mat-label>
+                <mat-select formControlName="icon">
+                    @for (icon of categoryIcons; track icon) {
+                        <mat-option [value]="icon">{{ icon }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" [disabled]="categoryForm.invalid">Add</button>
+        </form>
+        <ul class="category-list">
+            @for (category of categories; track category._id) {
+                <li>
+                    @if (editingCategoryId !== category._id) {
+                        <span class="cat-icon">{{ category.icon }}</span>
+                        <span class="cat-name">{{ category.name }}</span>
+                        <button mat-button color="primary" (click)="startEditCategory(category)">Edit</button>
+                        <button mat-button color="warn" (click)="deleteCategory(category)">Delete</button>
+                    } @else {
+                        <form class="edit-category-form" [formGroup]="editCategoryForm" (ngSubmit)="saveEditCategory(category)">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Edit name</mat-label>
+                                <input matInput formControlName="name" maxlength="32" required />
+                            </mat-form-field>
+                            <mat-form-field appearance="fill">
+                                <mat-label>Edit icon</mat-label>
+                                <mat-select formControlName="icon">
+                                    @for (icon of categoryIcons; track icon) {
+                                        <mat-option [value]="icon">{{ icon }}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="editCategoryForm.invalid">Save</button>
+                            <button mat-button type="button" (click)="cancelEditCategory()">Cancel</button>
+                        </form>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
 </div>
