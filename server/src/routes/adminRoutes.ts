@@ -128,7 +128,8 @@ export const adminRoutes = (router: Router): Router => {
                 return next({ status: 400, code: GENERAL_ERRORS.MISSING_REQUEST_PARAMETERS });
             }
 
-            const untilDate = new Date(until as string);
+            const cleanedUntil = (until as string).replace(/^"|"$/g, '');
+            const untilDate = new Date(cleanedUntil);
             if (isNaN(untilDate.getTime())) {
                 return next({ status: 400, code: GENERAL_ERRORS.MISSING_REQUEST_PARAMETERS });
             }

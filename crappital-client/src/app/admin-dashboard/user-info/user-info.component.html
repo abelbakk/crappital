@@ -1,0 +1,99 @@
+<button mat-icon-button class="back-btn" (click)="goBack()" aria-label="Back">
+    <mat-icon>arrow_back</mat-icon>
+</button>
+
+<div class="user-info-container">
+    @if (userInfo) {
+        <div class="user-card">
+            <div class="user-header">
+                <h2>{{ userInfo.firstName }} {{ userInfo.lastName }}</h2>
+            </div>
+
+            <div class="user-details">
+                <div class="detail-item">
+                    <span class="label">Email:</span>
+                    <span class="value">{{ userInfo.email }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Approved:</span>
+                    @if (userInfo.approved) {
+                        <span class="value">{{ userInfo.approved | date: 'd MMMM y hh:mm' }}</span>
+                    } @else {
+                        <span class="value">No</span>
+                    }
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Restricted Until:</span>
+                    @if (userInfo.restricted) {
+                        <span class="value">{{ userInfo.restricted | date: 'd MMMM y hh:mm' }}</span>
+                    } @else {
+                        <span class="value">No</span>
+                    }
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Phone:</span>
+                    <span class="value">{{ userInfo.phone }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Postal code:</span>
+                    <span class="value">{{ userInfo.address.postalCode }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Country:</span>
+                    <span class="value">{{ userInfo.address.country }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">County:</span>
+                    <span class="value">{{ userInfo.address.county }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">City:</span>
+                    <span class="value">{{ userInfo.address.city }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Street:</span>
+                    <span class="value">{{ userInfo.address.street }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Number:</span>
+                    <span class="value">{{ userInfo.address.number }}</span>
+                </div>
+
+                @if (userInfo.address.additionalDetails) {
+                    <div class="detail-item">
+                        <span class="label">Additional details:</span>
+                        <span class="value">{{ userInfo.address.additionalDetails }}</span>
+                    </div>
+                }
+
+                <div class="user-actions">
+                    @if (!userInfo.approved) {
+                        <button mat-raised-button color="primary" (click)="onApprove()">Approve</button>
+                    }
+
+                    <form [formGroup]="restrictForm" class="restrict-form">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Restrict Until</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="restrictDate" />
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <button mat-raised-button color="warn" (click)="onRestrict()" [disabled]="restrictForm.invalid">Restrict</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <div class="no-user">User not found.</div>
+    }
+</div>

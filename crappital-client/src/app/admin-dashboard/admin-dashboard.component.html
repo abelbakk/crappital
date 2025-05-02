@@ -1,1 +1,20 @@
-<p>admin-dashboard works!</p>
+<div class="admin-dashboard-container">
+    @if (unapprovedUsers.length > 0) {
+        <div class="notifications-container">
+            <h2>Pending Approvals</h2>
+            <div class="user-notifications">
+                @for (user of unapprovedUsers; track user._id) {
+                    <mat-card class="notification-card">
+                        <div class="notification-content">
+                            <div class="user-info">
+                                <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+                                <span class="user-email">{{ user.email }}</span>
+                            </div>
+                            <button mat-button color="primary" [routerLink]="['/admin-dashboard/user-info', user._id]">View Details</button>
+                        </div>
+                    </mat-card>
+                }
+            </div>
+        </div>
+    }
+</div>
