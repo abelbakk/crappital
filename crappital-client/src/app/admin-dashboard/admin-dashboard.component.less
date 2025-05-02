@@ -47,11 +47,66 @@
             opacity: 0.8;
         }
     }
+}
 
-    button {
-        min-width: auto;
-        padding: 0 1rem;
+.transaction-notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.transaction-card {
+    background-color: @color-crayola;
+    border: 1px solid @color-apple-green;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+
+    .transaction-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        @media screen and (max-width: 767px) {
+            flex-direction: column;
+            gap: 1rem;
+        }
     }
+
+    .transaction-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .transaction-detail {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .label {
+            font-weight: 600;
+            min-width: 4rem;
+        }
+
+        .value {
+            font-size: 0.9rem;
+        }
+    }
+
+    .transaction-actions {
+        display: flex;
+        gap: 0.5rem;
+
+        @media screen and (max-width: 767px) {
+            width: 100%;
+            justify-content: flex-end;
+        }
+    }
+}
+
+button {
+    min-width: auto;
+    padding: 0 1rem;
 }
 
 @media screen and (max-width: 767px) {

@@ -17,4 +17,59 @@
             </div>
         </div>
     }
+
+    @if (pendingTransactions.length > 0) {
+        <div class="notifications-container">
+            <h2>Pending Transactions</h2>
+            <div class="transaction-notifications">
+                @for (transaction of pendingTransactions; track transaction._id) {
+                    <div class="transaction-card">
+                        <div class="transaction-content">
+                            <div class="transaction-info">
+                                <div class="transaction-detail">
+                                    <span class="label">From:</span>
+                                    <span class="value">{{ transaction.fromAccount.name }} ({{ transaction.fromAccount.number }})</span>
+                                </div>
+                                <div class="transaction-detail">
+                                    <span class="label">To:</span>
+                                    <span class="value">{{ transaction.toAccount.name }} ({{ transaction.toAccount.number }})</span>
+                                </div>
+                                <div class="transaction-detail">
+                                    <span class="label">Amount:</span>
+                                    <span class="value">{{ transaction.amount }} {{ transaction.currencyFrom.code }}</span>
+                                </div>
+                                <div class="transaction-detail">
+                                    <span class="label">Date:</span>
+                                    <span class="value">{{ transaction.timestamp | date: 'medium' }}</span>
+                                </div>
+                            </div>
+                            <div class="transaction-actions">
+                                <button mat-raised-button color="primary" (click)="approveTransaction(transaction)">Approve</button>
+                                <button mat-raised-button color="primary" (click)="rejectTransaction(transaction)">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    @if (users.length > 0) {
+        <div class="notifications-container">
+            <h2>All users</h2>
+            <div class="user-notifications">
+                @for (user of users; track user._id) {
+                    <mat-card class="notification-card">
+                        <div class="notification-content">
+                            <div class="user-info">
+                                <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+                                <span class="user-email">{{ user.email }}</span>
+                            </div>
+                            <button mat-button color="primary" [routerLink]="['/admin-dashboard/user-info', user._id]">View Details</button>
+                        </div>
+                    </mat-card>
+                }
+            </div>
+        </div>
+    }
 </div>
