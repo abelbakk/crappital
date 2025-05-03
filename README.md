@@ -1,6 +1,6 @@
 # crappital
 
-Program systems development @ SZTE 2024-2025
+Program systems development @ SZTE 2025
 
 The fake netbank app is built on the MEAN stack:
 
