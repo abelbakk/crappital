@@ -4,9 +4,9 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "generate": "openapi-generator-cli generate -g typescript-angular -i https://crappital-production.up.railway.app/openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model",
+        "generate": "openapi-generator-cli generate -g typescript-angular -i http://localhost:5000/openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model",
         "build": "npm run generate && ng build",
-        "generate-docker": "openapi-generator-cli generate -g typescript-angular -i http://server:5000/openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model",
+        "generate-docker": "openapi-generator-cli generate -g typescript-angular -i https://crappital-production.up.railway.app/openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model",
         "build-docker": "npm run generate-docker && ng build",
         "watch": "ng build --watch --configuration development",
         "format": "prettier --write 'src/**/*.{ts,json,less,html}'",
