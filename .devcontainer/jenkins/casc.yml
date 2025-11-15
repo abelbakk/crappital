@@ -52,11 +52,11 @@ jobs:
               git {
                 remote {
                   url('https://github.com/abelbakk/crappital.git')
-                  credentialsId(null) 
                 }
-                branches('*/ci-cd-demo')
+                branch('*/ci-cd-demo')
               }
             }
+            lightweight()
             scriptPath('Jenkinsfile')
           }
         }
