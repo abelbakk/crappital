@@ -36,5 +36,25 @@ services:
     depends_on:
       - server
 
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/universal:2
+    command: sleep infinity
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  jenkins:
+    image: jenkins/jenkins:lts-jdk21
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - jenkins_data:/var/jenkins_home
+      - ./.devcontainer/casc.yml:/var/jenkins_home/casc.yml
+    environment:
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
+
 volumes:
   mongodb_data:
+  jenkins_data:
