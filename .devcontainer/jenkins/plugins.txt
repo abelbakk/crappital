@@ -4,4 +4,4 @@ git
 workflow-aggregator
 job-dsl
 theme-manager
-chocolate-theme
+catppuccin-theme

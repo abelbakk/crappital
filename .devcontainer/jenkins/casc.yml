@@ -22,7 +22,7 @@ jenkins:
 appearance:
   themeManager:
     disableUserThemes: false
-    theme: "chocolate"
+    theme: "mocha"
 
 tool:
   git:
@@ -57,7 +57,7 @@ jobs:
               }
             }
             lightweight()
-            scriptPath('Jenkinsfile')
+            scriptPath('.devcontainer/Jenkinsfile')
           }
         }
       }
