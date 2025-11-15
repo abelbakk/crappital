@@ -1,3 +1,3 @@
 #!/bin/bash
 
-kind create cluster
+sudo kind create cluster
