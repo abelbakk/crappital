@@ -1,0 +1,40 @@
+name: crappital
+
+services:
+  mongodb:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    container_name: crappital-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: crappital-server
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      DB_URL: mongodb://root:crappital@mongodb:27017/crappital?authSource=admin
+    depends_on:
+      - mongodb
+
+  client:
+    build:
+      context: ./crappital-client
+      dockerfile: Dockerfile
+    container_name: crappital-client
+    restart: unless-stopped
+    ports:
+      - "9021:80"
+    depends_on:
+      - server
+
+volumes:
+  mongodb_data:

@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs 'NodeJS 22'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                parallel (
+                    server: {
+                        dir('server') {
+                            sh 'npm ci'
+                        }
+                    },
+                    client: {
+                        dir('crappital-client') {
+                            sh 'npm ci'
+                        }
+                    }
+                )
+            }
+        }
+
+        stage('Build') {
+            steps {
+                parallel (
+                    server: {
+                        dir('server') {
+                            sh 'npm run build'
+                        }
+                    },
+                    client: {
+                        dir('crappital-client') {
+                            sh 'npm run build-ci'
+                        }
+                    }
+                )
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('server') {
+                    sh 'npm run test'
+                }
+            }
+        }
+
+        post {
+            always {
+                cleanWs()
+            }
+        }
+
+    }
+}

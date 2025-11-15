@@ -11,7 +11,9 @@
         "watch": "ng build --watch --configuration development",
         "format": "prettier --write 'src/**/*.{ts,json,less,html}'",
         "test": "ng test",
-        "clean": "rimraf src/api-client"
+        "clean": "rimraf src/api-client",
+        "generate-ci": "openapi-generator-cli generate -g typescript-angular -i ./openapi.json -o src/app/generated/core-api --additional-properties=ngVersion=19.2,stringEnums=true,enumPropertyNaming=UPPERCASE,fileNaming=kebab-case --generate-alias-as-model",
+        "build-ci": "npm run generate-ci && ng build"
     },
     "private": true,
     "dependencies": {
