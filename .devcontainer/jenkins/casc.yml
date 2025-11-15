@@ -14,7 +14,7 @@ jenkins:
       users:
       - id: "admin"
         name: "Crappital Admin"
-        password: "#jbcrypt:$2a$10$G.Uu.VLqxYYv1AW.y.hBHe1XsfkDclx7j6n83w2sUhHw4a4e.G.Pq"
+        password: "#jbcrypt:$2a$10$v0/Q/A./0.u.t.e.x.t.0.u.G.B.Z.e.w.G.X.g.Z.L.Z.w.C.h.I"
         properties:
         - mailer:
             emailAddress: "admin@crappital.valid"
