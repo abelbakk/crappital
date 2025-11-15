@@ -1,40 +1,40 @@
 name: crappital
 
 services:
-  mongodb:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
-    container_name: crappital-mongo
-    restart: unless-stopped
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongodb_data:/data/db
+  # mongodb:
+  #   build:
+  #     context: ./db
+  #     dockerfile: Dockerfile
+  #   container_name: crappital-mongo
+  #   restart: unless-stopped
+  #   ports:
+  #     - "27017:27017"
+  #   volumes:
+  #     - mongodb_data:/data/db
 
-  server:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    container_name: crappital-server
-    restart: unless-stopped
-    ports:
-      - "5000:5000"
-    environment:
-      DB_URL: mongodb://root:crappital@mongodb:27017/crappital?authSource=admin
-    depends_on:
-      - mongodb
+  # server:
+  #   build:
+  #     context: ./server
+  #     dockerfile: Dockerfile
+  #   container_name: crappital-server
+  #   restart: unless-stopped
+  #   ports:
+  #     - "5000:5000"
+  #   environment:
+  #     DB_URL: mongodb://root:crappital@mongodb:27017/crappital?authSource=admin
+  #   depends_on:
+  #     - mongodb
 
-  client:
-    build:
-      context: ./crappital-client
-      dockerfile: Dockerfile
-    container_name: crappital-client
-    restart: unless-stopped
-    ports:
-      - "9021:80"
-    depends_on:
-      - server
+  # client:
+  #   build:
+  #     context: ./crappital-client
+  #     dockerfile: Dockerfile
+  #   container_name: crappital-client
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9021:80"
+  #   depends_on:
+  #     - server
 
   devcontainer:
     image: mcr.microsoft.com/devcontainers/universal:latest
@@ -48,6 +48,7 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
+      - "50000:50000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
@@ -56,5 +57,5 @@ services:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
 
 volumes:
-  mongodb_data:
+  #mongodb_data:
   jenkins_data:

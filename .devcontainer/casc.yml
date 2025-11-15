@@ -1,2 +1,47 @@
+# https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/README.md
+
 jenkins:
   systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+  installState:
+    runSetupWizard: false
+
+security:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "#jbcrypt:$2a$10$8.A1/A.3.6j.X3.aY.6j.u.S3j.f.4.aY.6j.u.S3j.f.4.aY.6j.u"
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Overall/Administer:admin"
+
+plugins:
+  install:
+    - "nodejs"
+    - "git"
+    - "dark-theme"
+
+tool:
+  git:
+    installations:
+      - name: "Default Git"
+        properties:
+          - installSource:
+              installers:
+                - gitInstaller:
+                    version: "latest"
+  nodejs:
+    installations:
+      - name: "NodeJS 22"
+        properties:
+          - installSource:
+              installers:
+                - nodeJSInstaller:
+                    version: "22.14.0"
+
+unclassified:
+  themeManager:
+    disableUserThemes: false
+    theme: "dark"
