@@ -47,7 +47,7 @@ services:
     build:
       context: ./jenkins
       dockerfile: Dockerfile
-    restart: unless-stopped
+    restart: "no"
     ports:
       - "8080:8080"
       - "50000:50000"
