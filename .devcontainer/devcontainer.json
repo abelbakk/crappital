@@ -9,5 +9,6 @@
   "forwardPorts": [
     8080, // Jenkins
     50000 // Jenkins agents
-  ]
+  ],
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
