@@ -52,7 +52,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
-      - ./.devcontainer/casc.yml:/var/jenkins_home/casc.yml
+      - ./.devcontainer/jenkins/casc.yml:/var/jenkins_home/casc.yml
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
 

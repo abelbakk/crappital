@@ -12,16 +12,11 @@ security:
       users:
         - id: "admin"
           password: "#jbcrypt:$2a$10$8.A1/A.3.6j.X3.aY.6j.u.S3j.f.4.aY.6j.u.S3j.f.4.aY.6j.u"
+  
   authorizationStrategy:
     globalMatrix:
       permissions:
         - "Overall/Administer:admin"
-
-plugins:
-  install:
-    - "nodejs"
-    - "git"
-    - "dark-theme"
 
 tool:
   git:
