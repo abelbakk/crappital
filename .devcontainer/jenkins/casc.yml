@@ -1,4 +1,38 @@
 # https://github.com/jenkinsci/configuration-as-code-plugin/blob/master/README.md
 
 jenkins:
-  systemMessage: "Jenkins configured automatically by Jenkins Configuration as Code plugin\n\n"
+  systemMessage: |+
+    Jenkins configured automatically by Jenkins Configuration as Code plugin
+  
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+  
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+      - id: "admin"
+        name: "Crappital Admin"
+        password: "#jbcrypt:$2a$10$8.A1/A.3.6j.X3.aY.6j.u.S3j.f.4.aY.6j.u.S3j.f.4.aY.6j.u"
+        properties:
+        - mailer:
+            emailAddress: "admin@crappital.valid"
+
+tool:
+  git:
+    installations:
+    - name: "Default"
+      home: "git"
+      properties:
+      - installSource: {}
+  
+  nodejs:
+    installations:
+    - name: "NodeJS 22"
+      properties:
+      - installSource:
+          installers:
+          - nodeJSInstaller:
+              id: "22.14.0"
+              npmPackagesRefreshHours: 72
