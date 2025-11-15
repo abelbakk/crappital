@@ -32,8 +32,3 @@ tool:
               installers:
                 - nodeJSInstaller:
                     version: "22.14.0"
-
-unclassified:
-  themeManager:
-    disableUserThemes: false
-    theme: "dark"
