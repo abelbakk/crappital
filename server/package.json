@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "build": "node_modules/typescript/bin/tsc",
         "start": "node dist/index.js",
         "format": "prettier --write 'src/**/*.{ts,json}'"
@@ -25,6 +25,7 @@
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
         "@types/express-session": "^1.18.1",
+        "@types/jest": "^30.0.0",
         "@types/node-cron": "^3.0.11",
         "@types/passport": "^1.0.17",
         "@types/passport-local": "^1.0.38",
@@ -32,7 +33,9 @@
         "@types/swagger-ui-express": "^4.1.8",
         "@types/xml2js": "^0.4.14",
         "dotenv": "^16.4.7",
+        "jest": "^30.2.0",
         "prettier": "^3.5.3",
+        "ts-jest": "^29.4.5",
         "typescript": "^5.8.2"
     },
     "dependencies": {

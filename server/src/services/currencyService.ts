@@ -51,7 +51,7 @@ export const convertCurrency = async (from: string, to: string, amount: string) 
 
         const numericAmount = parseFloat(amount);
         if (isNaN(numericAmount) || numericAmount <= 0) {
-            throw new Error(`Invalid amount "${numericAmount}"`);
+            throw new Error(`Invalid amount "${amount}"`);
         }
 
         const exchangeRate = fromCurrency.exchangeRates.get(to.toUpperCase()) as number | undefined;
