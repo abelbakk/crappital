@@ -22,7 +22,7 @@ jenkins:
 appearance:
   themeManager:
     disableUserThemes: false
-    theme: "mocha"
+    theme: "catppuccinMocha"
 
 tool:
   git:
