@@ -19,6 +19,11 @@ jenkins:
         - mailer:
             emailAddress: "admin@crappital.valid"
 
+appearance:
+  themeManager:
+    disableUserThemes: false
+    theme: "chocolate"
+
 tool:
   git:
     installations:
@@ -36,3 +41,23 @@ tool:
           - nodeJSInstaller:
               id: "22.14.0"
               npmPackagesRefreshHours: 72
+
+jobs:
+  - script: >
+      pipelineJob('crappital-pipeline') {
+        description('ci/cd pipeline for crappital')
+        definition {
+          cpsScm {
+            scm {
+              git {
+                remote {
+                  url('https://github.com/abelbakk/crappital.git')
+                  credentialsId(null) 
+                }
+                branches('*/ci-cd-demo')
+              }
+            }
+            scriptPath('Jenkinsfile')
+          }
+        }
+      }

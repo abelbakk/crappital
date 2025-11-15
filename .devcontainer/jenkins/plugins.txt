@@ -1,3 +1,7 @@
 configuration-as-code
 nodejs
 git
+workflow-aggregator
+job-dsl
+theme-manager
+chocolate-theme
