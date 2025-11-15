@@ -44,7 +44,9 @@ services:
     restart: unless-stopped
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk21
+    build:
+      context: ./jenkins
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -52,7 +54,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
-      - ./.devcontainer/jenkins/casc.yml:/var/jenkins_home/casc.yml
+      - ./jenkins/casc.yml:/var/jenkins_home/casc.yml
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
 
