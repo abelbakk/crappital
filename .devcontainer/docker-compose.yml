@@ -57,6 +57,7 @@ services:
       - ./jenkins/casc.yml:/var/jenkins_home/casc.yml
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
+      - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
 
 volumes:
   #mongodb_data:
