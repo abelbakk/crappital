@@ -14,17 +14,3 @@ authorizationStrategy:
   globalMatrix:
     permissions:
       - "Overall/Administer:admin"
-
-tool:
-  git:
-    installations:
-      - name: "Default Git"
-        home: "/usr/bin/git"
-  nodejs:
-    installations:
-      - name: "NodeJS 22"
-        properties:
-          - installSource:
-              installers:
-                - nodeJSInstaller:
-                    version: "22.14.0"
