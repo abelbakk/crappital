@@ -3,10 +3,8 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "mounts": ["type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"],
   "forwardPorts": [
-    8080, // Jenkins
-    50000 // Jenkins agents
+    8080 // Jenkins
   ],
   "remoteUser": "root",
   "postCreateCommand": "bash .devcontainer/post-create.sh"
