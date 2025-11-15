@@ -1,4 +1,4 @@
 #!/bin/bash
 
-minikube start --driver=docker
-minikube addons enable nginx
+sudo minikube start --driver=docker
+sudo minikube addons enable nginx
