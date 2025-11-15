@@ -19,11 +19,7 @@ tool:
   git:
     installations:
       - name: "Default Git"
-        properties:
-          - installSource:
-              installers:
-                - gitInstaller:
-                    version: "latest"
+        home: "/usr/bin/git"
   nodejs:
     installations:
       - name: "NodeJS 22"
