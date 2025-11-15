@@ -1,1 +1,14 @@
-{"image":"mcr.microsoft.com/devcontainers/universal:2"}
+{
+  "name": "crappital ci/cd devcontainer",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "forwardPorts": [
+    9021, // crappital client
+    5000, // crappital server
+    8080 // Jenkins
+  ]
+}
