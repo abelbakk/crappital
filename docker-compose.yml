@@ -37,7 +37,7 @@ services:
       - server
 
   devcontainer:
-    image: mcr.microsoft.com/devcontainers/universal:2
+    image: mcr.microsoft.com/devcontainers/universal:latest
     command: sleep infinity
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
