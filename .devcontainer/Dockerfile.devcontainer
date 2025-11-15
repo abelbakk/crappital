@@ -1,0 +1,10 @@
+FROM alpine:latest
+
+RUN apk add --no-cache curl docker-cli
+
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+RUN chmod +x ./kubectl
+RUN mv ./kubectl /usr/local/bin/kubectl
+
+RUN curl -L https://github.com/kubernetes-sigs/kind/releases/download/v0.30.0/kind-linux-amd64 -o /usr/local/bin/kind
+RUN chmod +x /usr/local/bin/kind

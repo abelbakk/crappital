@@ -3,13 +3,10 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-from-docker:1": {},
-    "ghcr.io/devcontainers-extra/features/kind:1": {}
-  },
   "forwardPorts": [
     8080, // Jenkins
     50000 // Jenkins agents
   ],
+  "remoteUser": "root",
   "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
