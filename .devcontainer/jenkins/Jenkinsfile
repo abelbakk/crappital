@@ -63,7 +63,7 @@ pipeline {
             }
         }
 
-        stage('Build Docker images') {
+        stage('Build release Docker images') {
             steps {
                 parallel (
                     server: {
@@ -79,6 +79,19 @@ pipeline {
                         sh 'docker buildx build --load -t crappital-mongo:${GIT_COMMIT} db/'
                     }
                 )
+            }
+        }
+
+        stage('Deploy to kubernetes') {
+            steps {
+                sh "sed -i 's|crappital-server:latest|crappital-server:${GIT_COMMIT}|g' .devcontainer/k8s/02-app.yaml"
+                sh "sed -i 's|crappital-client:latest|crappital-client:${GIT_COMMIT}|g' .devcontainer/k8s/02-app.yaml"
+                sh "sed -i 's|crappital-mongo:latest|crappital-mongo:${GIT_COMMIT}|g' .devcontainer/k8s/01-db.yaml"
+
+                sh 'kubectl apply -f .devcontainer/k8s/'
+
+                sh 'kubectl rollout status deployment/crappital-server-deployment --timeout=120s'
+                sh 'kubectl rollout status deployment/crappital-client-deployment --timeout=120s'
             }
         }
 

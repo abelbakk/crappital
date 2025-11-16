@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crappital-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crappital-server
+  template:
+    metadata:
+      labels:
+        app: crappital-server
+    spec:
+      containers:
+        - name: server
+          image: crappital-server:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_URL
+              value: "mongodb://root:crappital@mongodb-service:27017/crappital?authSource=admin"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crappital-server-service
+spec:
+  selector:
+    app: crappital-server
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crappital-client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crappital-client
+  template:
+    metadata:
+      labels:
+        app: crappital-client
+    spec:
+      containers:
+        - name: client
+          image: crappital-client:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: crappital-client-service
+spec:
+  selector:
+    app: crappital-client
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
