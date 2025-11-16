@@ -3,7 +3,7 @@ pipeline {
     agent {
         docker {
             image 'crappital-devcontainer:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -v /root/.kube:/root/.kube'
         }
     }
 
