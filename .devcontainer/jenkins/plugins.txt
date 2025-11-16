@@ -5,3 +5,4 @@ workflow-aggregator
 job-dsl
 theme-manager
 catppuccin-theme
+docker-workflow
