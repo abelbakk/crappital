@@ -1,0 +1,14 @@
+FROM node:22-alpine
+
+RUN npm install -g pm2
+
+WORKDIR /app
+
+COPY server/package.json server/package-lock.json ./
+COPY server/dist ./dist
+
+RUN npm ci --only=production && npm cache clean --force
+
+EXPOSE 5000
+
+CMD ["pm2-runtime", "start", "dist/index.js"]
