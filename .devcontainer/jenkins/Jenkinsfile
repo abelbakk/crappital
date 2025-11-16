@@ -3,7 +3,7 @@ pipeline {
     agent {
         docker {
             image 'crappital-devcontainer:latest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock -v /workspaces/crappital:/workspaces/crappital'
+            args '-v /var/run/docker.sock:/var/run/docker.sock -v /workspaces/crappital:/workspaces/crappital --network crappital-net'
         }
     }
 
