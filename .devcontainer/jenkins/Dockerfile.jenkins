@@ -1,7 +1,5 @@
 FROM jenkins/jenkins:lts-alpine-jdk21
 
-ARG DOCKER_GID_FROM_HOST
-
 USER root
 
 RUN apk add --no-cache docker-cli
