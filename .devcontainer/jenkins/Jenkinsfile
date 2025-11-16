@@ -84,8 +84,8 @@ pipeline {
 
         stage('Deploy to kubernetes') {
             steps {
-                sh "sed -i 's|crappital-server:latest|crappital-server:${GIT_COMMIT}|g' .devcontainer/k8s/02-app.yaml"
-                sh "sed -i 's|crappital-client:latest|crappital-client:${GIT_COMMIT}|g' .devcontainer/k8s/02-app.yaml"
+                sh "sed -i 's|crappital-server:latest|crappital-server:${GIT_COMMIT}|g' .devcontainer/k8s/02-crappital.yaml"
+                sh "sed -i 's|crappital-client:latest|crappital-client:${GIT_COMMIT}|g' .devcontainer/k8s/02-crappital.yaml"
                 sh "sed -i 's|crappital-mongo:latest|crappital-mongo:${GIT_COMMIT}|g' .devcontainer/k8s/01-db.yaml"
 
                 sh 'kubectl apply -f .devcontainer/k8s/'
