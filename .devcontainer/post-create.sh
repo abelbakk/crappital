@@ -17,3 +17,5 @@ kubectl wait --kubeconfig ${KUBECONFIG_PATH} \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
   --timeout=300s
+
+echo "alias k9s='k9s --kubeconfig ${KUBECONFIG_PATH}'" >> /root/.profile
