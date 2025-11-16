@@ -18,4 +18,4 @@ kubectl wait --kubeconfig ${KUBECONFIG_PATH} \
   --selector=app.kubernetes.io/component=controller \
   --timeout=300s
 
-echo "alias k9s='k9s --kubeconfig ${KUBECONFIG_PATH}'" >> /root/.profile
+echo "alias k9s='k9s --kubeconfig ${KUBECONFIG_PATH}'" >> /root/.bashrc

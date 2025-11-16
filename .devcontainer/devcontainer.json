@@ -11,5 +11,8 @@
     8080 // Jenkins
   ],
   "remoteUser": "root",
-  "postCreateCommand": "bash .devcontainer/post-create.sh"
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  }
 }
