@@ -4,8 +4,8 @@
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "forwardPorts": [
-    8081, // app (via nginx)
-    8443, // app (via nginx)
+    40080, // app (via nginx)
+    40443, // app (via nginx)
     8080 // Jenkins
   ],
   "remoteUser": "root",
