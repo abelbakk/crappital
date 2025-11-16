@@ -67,25 +67,16 @@ pipeline {
             steps {
                 parallel (
                     server: {
-                        echo "Building server image..."
-                        sh 'docker build -t crappital-server:latest -f .devcontainer/build/server/Dockerfile.deploy .'
-
-                        echo "Loading server image into kind..."
-                        sh 'kind load docker-image crappital-server:latest'
+                        echo 'Building server image...'
+                        sh 'docker buildx build --load -t crappital-server:${GIT_COMMIT} -f .devcontainer/build/server/Dockerfile.deploy .'
                     },
                     client: {
                         echo 'Building client image...'
-                        sh 'docker build -t crappital-client:latest -f .devcontainer/build/client/Dockerfile.deploy .'
-                        
-                        echo 'Loading client image into kind...'
-                        sh 'kind load docker-image crappital-client:latest'
+                        sh 'docker buildx build --load -t crappital-client:${GIT_COMMIT} -f .devcontainer/build/client/Dockerfile.deploy .'
                     },
                     db: {
                         echo 'Building database image...'
-                        sh 'docker build -t crappital-mongo:latest db/'
-                        
-                        echo 'Loading database image into kind...'
-                        sh 'kind load docker-image crappital-mongo:latest'
+                        sh sh 'docker buildx build --load -t crappital-mongo:${GIT_COMMIT} db/'
                     }
                 )
             }
