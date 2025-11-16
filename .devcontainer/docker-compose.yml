@@ -8,6 +8,7 @@ services:
     command: sleep infinity
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ..:/workspaces/crappital:cached
     restart: "no"
     networks:
       - crappital-net
@@ -23,6 +24,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - jenkins_data:/var/jenkins_home
       - ./jenkins/casc.yml:/var/jenkins_home/casc.yml
+      - ..:/workspaces/crappital:cached
     environment:
       - CASC_JENKINS_CONFIG=/var/jenkins_home/casc.yml
       - JAVA_OPTS="-Djenkins.install.runSetupWizard=false"
