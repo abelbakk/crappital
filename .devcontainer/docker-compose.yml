@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.devcontainer
+      args:
+        - DOCKER_GID_FROM_HOST=${$(stat -c '%g' /var/run/docker.sock)}
     command: sleep infinity
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
