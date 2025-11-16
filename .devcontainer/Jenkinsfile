@@ -76,7 +76,7 @@ pipeline {
                     },
                     db: {
                         echo 'Building database image...'
-                        sh sh 'docker buildx build --load -t crappital-mongo:${GIT_COMMIT} db/'
+                        sh 'docker buildx build --load -t crappital-mongo:${GIT_COMMIT} db/'
                     }
                 )
             }
