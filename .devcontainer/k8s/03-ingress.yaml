@@ -15,6 +15,20 @@ spec:
             name: crappital-server-service 
             port:
               number: 5000
+      - path: /api-docs
+        pathType: Prefix
+        backend:
+          service:
+            name: crappital-server-service
+            port:
+              number: 5000
+      - path: /openapi.json
+        pathType: Prefix
+        backend:
+          service:
+            name: crappital-server-service
+            port:
+              number: 5000
       - path: /
         pathType: Prefix
         backend:
