@@ -4,8 +4,10 @@
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "forwardPorts": [
-    41080, // app (via nginx)
-    41443, // app (via nginx)
+    // these two have to be forwarded manually later, otherwise a race condition between this
+    // and the proxying of devcontainer make it impossible to set up
+    // 41080, // app (via nginx)
+    // 41443, // app (via nginx)
     8080 // Jenkins
   ],
   "remoteUser": "root",
