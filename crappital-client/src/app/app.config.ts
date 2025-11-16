@@ -10,6 +10,6 @@ export const appConfig: ApplicationConfig = {
         provideZoneChangeDetection({ eventCoalescing: true }),
         provideRouter(routes),
         provideHttpClient(withFetch(), withInterceptors([httpErrorInterceptor])),
-        { provide: Configuration, useValue: new Configuration({ basePath: 'http://localhost:5000', withCredentials: true }) },
+        { provide: Configuration, useValue: new Configuration({ basePath: '', withCredentials: true }) },
     ],
 };
