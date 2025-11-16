@@ -6,11 +6,6 @@ USER root
 
 RUN apk add --no-cache docker-cli
 
-RUN addgroup -g ${DOCKER_GID_FROM_HOST} docker
-RUN adduser jenkins docker
-
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
-
-USER jenkins
