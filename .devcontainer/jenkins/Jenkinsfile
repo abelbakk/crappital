@@ -68,15 +68,18 @@ pipeline {
                 parallel (
                     server: {
                         echo 'Building server image...'
-                        sh 'docker buildx build --load -t crappital-server:${GIT_COMMIT} -f .devcontainer/build/server/Dockerfile.deploy .'
+                        sh 'docker buildx build -t crappital-server:${GIT_COMMIT} -f .devcontainer/build/server/Dockerfile.deploy .'
+                        sh 'kind load docker-image crappital-server:${GIT_COMMIT}'
                     },
                     client: {
                         echo 'Building client image...'
-                        sh 'docker buildx build --load -t crappital-client:${GIT_COMMIT} -f .devcontainer/build/client/Dockerfile.deploy .'
+                        sh 'docker buildx build -t crappital-client:${GIT_COMMIT} -f .devcontainer/build/client/Dockerfile.deploy .'
+                        sh 'kind load docker-image crappital-client:${GIT_COMMIT}'
                     },
                     db: {
                         echo 'Building database image...'
-                        sh 'docker buildx build --load -t crappital-mongo:${GIT_COMMIT} db/'
+                        sh 'docker buildx build -t crappital-mongo:${GIT_COMMIT} db/'
+                        sh 'kind load docker-image crappital-mongo:${GIT_COMMIT}'
                     }
                 )
             }
