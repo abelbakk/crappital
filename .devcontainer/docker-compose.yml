@@ -31,6 +31,24 @@ services:
     networks:
       - crappital-net
 
+  prometheus:
+    image: prom/prometheus:v3.7.3
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - crappital-net
+
+  grafana:
+    image: grafana/grafana:12.4.0
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - crappital-net
+
 networks:
   crappital-net:
     name: crappital-net
