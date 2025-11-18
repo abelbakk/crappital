@@ -19,6 +19,7 @@ import { accountRoutes } from './routes/accountRoutes';
 import { transactionRoutes } from './routes/transactionRoutes';
 import { statisticsRoutes } from './routes/statisticsRoutes';
 import { adminRoutes } from './routes/adminRoutes';
+import { metricsRoutes } from './utils/metrics';
 
 dotenv.config();
 
@@ -72,6 +73,7 @@ app.use('/core/accounts', accountRoutes(express.Router()));
 app.use('/core/transactions', transactionRoutes(express.Router()));
 app.use('/core/statistics', statisticsRoutes(express.Router()));
 app.use('/core/admin', adminRoutes(express.Router()));
+app.use('/metrics', metricsRoutes(express.Router()));
 setupSwagger(app);
 app.use(errorHandler);
 
