@@ -12,6 +12,21 @@
     9090, // Prometheus
     3000 // Grafana
   ],
+  "portsAttributes": {
+    "8080": {
+      "label": "jenkins"
+    },
+    "9090": {
+      "label": "prometheus"
+    },
+    "3000": {
+      "label": "grafana"
+    },
+    "41080": {
+      "label": "crappital through nginx",
+      "onAutoForward": "ignore"
+    }
+  },
   "remoteUser": "root",
   "postCreateCommand": "bash .devcontainer/post-create.sh",
   "settings": {
