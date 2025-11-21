@@ -49,6 +49,8 @@ services:
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+    volumes:
+    - ./grafana/provisioning:/etc/grafana/provisioning
     networks:
       - crappital-net
 
