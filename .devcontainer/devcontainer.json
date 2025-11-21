@@ -23,7 +23,7 @@
       "label": "grafana"
     },
     "41080": {
-      "label": "crappital through nginx",
+      "label": "crappital",
       "onAutoForward": "ignore"
     }
   },
