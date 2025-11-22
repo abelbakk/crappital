@@ -2,7 +2,7 @@
 
 Project made for the referenced course. It builds upon a previous application created for Program systems development in a previous semester. I've decided to put it into the same repository but on a different branch (ci-cd-demo, which is hopefully the default one now).
 
-Most of the stuff that this project produced are structured into the `.devcontainer` directory. This is also what the project builds upon: I've tried to make it in a way that everything can be run using GitHub codespaces and also in a way that makes it reproducible: whenever a new devcontainer/codespace is booted up on this branch, after a while, everything should be configured for use. The application is not deployed by default, I'll go into details in the `Using the devcontainer` section. For the demo I plan to predeploy it since the Jenkins pipeline which deployes it to the cluster also takes a good few minutes. Most of the inspiration for this setup came from [this video](https://youtu.be/hh2K5XCN6Nk).
+Most of the artifacts produced by this project are organised within the `.devcontainer` directory. This is also what the project builds upon: I've tried to make it in a way that everything can be run using GitHub codespaces and also in a way that makes it reproducible: whenever a new devcontainer/codespace is booted up on this branch, after a while, everything should be configured for use. The application is not deployed by default, I'll go into details in the `Using the devcontainer` section. For the demo I plan to predeploy it since the Jenkins pipeline which deploys it to the cluster also takes a good few minutes. Most of the inspiration for this setup came from [this video](https://youtu.be/hh2K5XCN6Nk).
 
 ## Structure
 
@@ -19,7 +19,7 @@ ipg3 :: crappital/git/.devcontainer ‹ci-cd-demo› » tree -L 4
 │   └── server
 │       └── Dockerfile.deploy # container for the server, installs pm2 and runs the built Node.js app
 ├── devcontainer.json # codespace config; sets root user, forwards ports, and runs the post-create script
-├── docker-compose.yml # runs the platform services (Jenkins, Grafana, Prometheus) anddDevcontainer on a shared network with Docker socket access
+├── docker-compose.yml # runs the platform services (Jenkins, Grafana, Prometheus) and Devcontainer on a shared network with Docker socket access
 ├── grafana
 │   └── provisioning
 │       ├── dashboards
@@ -46,7 +46,7 @@ ipg3 :: crappital/git/.devcontainer ‹ci-cd-demo› » tree -L 4
 
 Additionally, I've had to make some changes to the application itself to make it viable for this environment:
 
-- the client previously generated its API classes by asking the server for an `openapi.json` before it began its own build process; this had to be changed because having the client depend on the server in such a way is a bigger headache that I wanted to handle here (it's also probably not the best design choice): now it uses a hardcoded openapi.json
+- the client previously generated its API classes by asking the server for an `openapi.json` before it began its own build process; this had to be changed because having the client depend on the server in such a way is a bigger headache than I wanted to handle here (it's also probably not the best design choice): now it uses a hardcoded openapi.json
 - I've added prom-client to the server and exposed default metrics through `/metrics`
 - I've added some tests to the server (`server/tests/services/currencyService.test.ts`) so that there are some tests to run
 
@@ -58,7 +58,7 @@ I've also attempted to make a sketch of the different deployments and connection
 
 I've used the following tools (there are some additional ones, but those weren't listed in the course): Git, Docker, Jenkins, Nginx, Kubernetes (through Kind), Prometheus, Grafana.
 
-I also attempted to use minikube, since that is included in Microsoft's default devcontainer image, but I had a lot of trouble configuring it and also ran into memory issues and just performance issues in general. Kind seems to consume a less resources and can boot up faster, at least in my experience.
+I also attempted to use minikube, since that is included in Microsoft's default devcontainer image, but I had a lot of trouble configuring it and also ran into memory issues and just performance issues in general. Kind seems to consume less resources and can boot up faster, at least in my experience.
 
 ## Using the devcontainer
 
